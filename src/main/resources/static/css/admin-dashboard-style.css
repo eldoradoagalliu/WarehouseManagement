@@ -1,0 +1,22 @@
+* {
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: darkgrey;
+}
+
+body, .logout, .link {
+    color: white;
+    font-weight: 600;
+}
+
+.register {
+    color: black;
+    font-weight: 600;
+}
+
+.link {
+    text-decoration: none;
+}
