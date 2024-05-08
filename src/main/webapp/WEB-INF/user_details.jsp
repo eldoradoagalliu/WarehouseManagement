@@ -11,20 +11,20 @@
     <title>User Details</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/main-style.css">
 </head>
 <body>
 <div class="main-part">
     <h2 class="text-center mb-3 details">User Details</h2>
-    <div class="form-register">
+    <div class="register-form">
         <div>Name: <c:out value="${user.getFullName()}"/></div>
         <div>Email: <c:out value="${user.email}"/></div>
-        <div>Account created on: <fmt:formatDate pattern="HH:mm d MMMM yyyy" value="${user.createdAt}"/></div>
+        <div>Account created on: <fmt:formatDate pattern="HH:mm, d MMMM yyyy" value="${user.createdAt}"/></div>
         <form:form action="/request/password/change/${user.id}" method="POST">
             <div class="d-flex align-content-center m-1">
-                <label class="col-sm-5 col-form-label">New password: </label>
+                <label class="col-sm-5 col-form-label">New password:</label>
                 <input name="newPassword" class="form-control input-font" required="required"/>
             </div>
             <c:if test="${passwordMatches != null}">

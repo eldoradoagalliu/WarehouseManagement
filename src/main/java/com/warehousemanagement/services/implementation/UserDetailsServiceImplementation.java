@@ -1,4 +1,4 @@
-package com.warehousemanagement.services;
+package com.warehousemanagement.services.implementation;
 
 import com.warehousemanagement.models.Role;
 import com.warehousemanagement.models.User;

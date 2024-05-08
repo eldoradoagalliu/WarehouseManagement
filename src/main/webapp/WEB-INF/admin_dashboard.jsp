@@ -9,14 +9,13 @@
     <title>Admin Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="/css/admin-dashboard-style.css">
 </head>
 <body class="container">
 <h1 class="text-center text-u">Admin Dashboard</h1>
 <div class="d-flex justify-content-end mt-5">
-    <%--@elvariable id="user" type=""--%>
     <form:form action="/register" method="GET">
         <button class="btn btn-light register">Register User</button>
     </form:form>
@@ -25,13 +24,13 @@
         <button class="btn btn-dark logout">Logout</button>
     </form>
 </div>
-<c:if test="${users.size() > 0}">
+<c:if test="${!users.isEmpty()}">
     <h2>Users registered in Warehouse Application</h2>
-    <c:if test="${successfulChangeMessage != null}">
-        <div class="text-success text-center m-1"><c:out value="${successfulChangeMessage}"/></div>
+    <c:if test="${successfulPasswordChange != null}">
+        <div class="text-success text-center m-1"><c:out value="${successfulPasswordChange}"/></div>
     </c:if>
-    <c:if test="${reusedOldPasswordMessage != null}">
-        <div class="text-danger text-center m-1"><c:out value="${reusedOldPasswordMessage}"/></div>
+    <c:if test="${reusedOldPassword != null}">
+        <div class="text-danger text-center m-1"><c:out value="${reusedOldPassword}"/></div>
     </c:if>
     <table class="table table-hover table-dark table-striped text-center">
         <thead>
@@ -42,8 +41,8 @@
         <c:forEach var="user" items="${users}">
             <tbody>
             <tr>
-                <td><a href="/account/${user.id}" class="link">${user.getFullName()}</a></td>
-                <td><c:out value="${user.getUserRole()}"/></td>
+                <td class="align-content-center"><a href="/account/${user.id}" class="link">${user.getFullName()}</a></td>
+                <td class="align-content-center"><c:out value="${user.getUserRole()}"/></td>
                 <td class="d-flex align-content-center justify-content-end">
                     <c:if test="${user.newRequestedPassword != null}">
                         <form:form action="/approve/password/change/${user.id}" method="POST">
@@ -58,7 +57,6 @@
                         <input type="hidden" name="_method" value="delete">
                         <button class="btn btn-danger">Delete</button>
                     </form:form>
-
                 </td>
             </tr>
             </tbody>

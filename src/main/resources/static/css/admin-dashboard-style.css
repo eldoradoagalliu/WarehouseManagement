@@ -14,6 +14,9 @@ body, .logout, .link {
 
 .register {
     color: black;
+}
+
+.register, .logout {
     font-weight: 600;
 }
 

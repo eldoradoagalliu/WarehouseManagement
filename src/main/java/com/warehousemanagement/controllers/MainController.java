@@ -18,6 +18,8 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Objects;
 
+import static com.warehousemanagement.models.constants.Constants.*;
+
 @Controller
 public class MainController {
 
@@ -50,13 +52,13 @@ public class MainController {
                         @RequestParam(value = "logout", required = false) String logout, Model model) {
         if (error != null) {
             logger.warn("Invalid username or password!");
-            model.addAttribute("errorMessage", "Invalid Credentials, Please try again.");
+            model.addAttribute("errorMessage", INVALID_CREDENTIALS);
         }
         if (logout != null) {
             logger.info("Successfully logged out!");
-            model.addAttribute("logoutMessage", "Logout Successful!");
+            model.addAttribute("logoutMessage", SUCCESSFUL_LOGOUT);
         }
-        model.addAttribute("adminExists", !userService.getAllUsers().isEmpty());
+        model.addAttribute("adminDoesntExist", userService.getAllUsers().isEmpty());
         return "login";
     }
 
@@ -68,7 +70,8 @@ public class MainController {
 
     @GetMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("adminExists", !userService.getAllUsers().isEmpty());
+        logger.info("Registering new user");
+        model.addAttribute("adminDoesntExist", userService.getAllUsers().isEmpty());
         return "register";
     }
 
@@ -80,9 +83,9 @@ public class MainController {
 
         if (result.hasErrors() || Objects.nonNull(userService.findUser(user.getEmail()))) {
             if (Objects.nonNull(userService.findUser(user.getEmail()))) {
-                model.addAttribute("emailExistsErrorMessage", "This email has been used by another user!");
+                model.addAttribute("emailExists", EMAIL_EXISTS);
             }
-            model.addAttribute("adminExists", !userService.getAllUsers().isEmpty());
+            model.addAttribute("adminDoesntExist", userService.getAllUsers().isEmpty());
             return "register";
         }
         userService.createUser(user, role);
@@ -93,6 +96,7 @@ public class MainController {
 
     private void authWithHttpServletRequest(HttpServletRequest request, String email, String password) {
         try {
+            logger.info("Authenticating user..");
             request.login(email, password);
         } catch (ServletException e) {
             logger.error("Error while authenticating user", e);
@@ -101,20 +105,23 @@ public class MainController {
 
     @GetMapping("/system/admin")
     public String adminDashboard(Principal principal, @ModelAttribute("user") User user, Model model) {
-        logger.info("Logged as the System Administrator");
+        logger.info("In System Administrator Dashboard");
         model.addAttribute("users", userService.getNonAdminUsers());
         return "admin_dashboard";
     }
 
     @GetMapping("/manage/warehouse")
     public String managerDashboard(Principal principal, Model model) {
-        logger.info("Logged as the Warehouse Manager");
+        logger.info("In Warehouse Manager Dashboard");
         return "dashboard";
     }
 
     @GetMapping("/dashboard")
-    public String dashboard() {
-        logger.info("Logged as a Client");
+    public String dashboard(Principal principal, Model model) {
+        logger.info("In Client Dashboard");
+        if (userService.principalIsNull(principal)) return "redirect:/logout";
+        User currentUser = userService.findUser(principal.getName());
+        model.addAttribute("user", currentUser);
         return "dashboard";
     }
 }

@@ -55,21 +55,21 @@ public class UserService {
         userRepo.delete(user);
     }
 
-    public Boolean principalIsNull(Principal principal) {
+    public boolean principalIsNull(Principal principal) {
         return Objects.isNull(findUser(principal.getName()));
     }
 
-    public Boolean isAdmin(Principal principal) {
+    public boolean isAdmin(Principal principal) {
         User currentUser = findUser(principal.getName());
         return currentUser.getRoles().get(0).getName().equals(RoleEnum.SYSTEM_ADMIN.getRole());
     }
 
-    public Boolean isManager(Principal principal) {
+    public boolean isManager(Principal principal) {
         User currentUser = findUser(principal.getName());
         return currentUser.getRoles().get(0).getName().equals(RoleEnum.WAREHOUSE_MANAGER.getRole());
     }
 
-    public Boolean changePassword(Long userId, String newPassword) {
+    public boolean changePassword(Long userId, String newPassword) {
         User currentUser = findUser(userId);
         String encodedNewPassword = bCryptPwEncoder.encode(newPassword);
 
@@ -82,7 +82,7 @@ public class UserService {
         return false;
     }
 
-    public Boolean passwordMatches(String newPassword, String oldPassword) {
+    public boolean passwordMatches(String newPassword, String oldPassword) {
         return bCryptPwEncoder.matches(newPassword, oldPassword);
     }
 }
