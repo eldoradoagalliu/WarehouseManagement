@@ -1,0 +1,39 @@
+* {
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+    color: black;
+}
+
+body {
+    background: lightskyblue;
+}
+
+.logout, .title, .order-button, .account-button, .link, .filter, .filter-button, .details {
+    font-weight: 600;
+}
+
+.logout, .order-button {
+    color: white;
+}
+
+.link {
+    color: black;
+    text-decoration: none;
+}
+
+li, .filter {
+    font-size: 18px;
+}
+
+.filter {
+    padding-left: 35px;
+}
+
+.option {
+    width: 200px;
+}
+
+.quantity-input {
+    border: 1px solid black;
+    border-radius: 10px;
+}

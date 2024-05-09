@@ -1,0 +1,59 @@
+* {
+    font-family: 'Poppins', sans-serif;
+    padding: 10px;
+}
+
+body {
+    background: lightseagreen;
+}
+
+.logout, .dashboard-button, .account-button, .link, .filter, .details {
+    font-weight: 600;
+}
+
+.logout, .dashboard-button, .title {
+    color: white;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.account-button, .link {
+    color: black;
+}
+
+.filter {
+    padding-left: 35px;
+}
+
+li, .filter {
+    font-size: 18px;
+}
+
+.option {
+    width: 200px;
+}
+
+.reason-input {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.truck-form {
+    background: lightgrey;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.truck-input {
+    width: 250px;
+    height: 80%;
+    margin-left: 10px;
+}
+
+.truck-button {
+    text-align: center;
+    width: 60px;
+    height: 80%;
+}

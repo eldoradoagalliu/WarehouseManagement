@@ -13,11 +13,12 @@ body {
     height: 100%;
     background: lightgrey;
     padding: 20px;
+    margin-top: 5%;
 }
 
-.form-login, .form-register, .edit-user-form {
+.login-form, .register-form, .edit-user-form, .edit-truck-form {
     width: 500px;
-    margin: 30px auto 100px;
+    margin: 100px auto;
     padding: 10px;
 }
 
@@ -44,15 +45,15 @@ body {
     font-size: 18px;
 }
 
-.main-part, .form-login, .form-register, .edit-user-form {
+.main-part, .login-form, .register-form, .edit-user-form {
     border: 2px solid black;
 }
 
-.main-part, .form-login, .form-register, .edit-user-form {
+.main-part, .login-form, .register-form, .edit-user-form {
     border-radius: 10px;
 }
 
-*, .input, .login, .register, .details, .input-font, .login-button, .register-button, .edit-button {
+*, .input, .login, .register, .details, .login-button, .register-button, .edit-button {
     font-weight: 600;
 }
 
