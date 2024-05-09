@@ -15,6 +15,7 @@ public class Constants {
     public static final String LOW_QUANTITY_ITEM = "The item required is in low quantity in our inventory!";
     public static final String NOT_CORRECT_STATUS = "The order can't be cancelled in the current status!";
     public static final String NOT_CORRECT_SUBMISSION_STATUS = "The order is not in the correct submission status!";
+    public static final long DEFAULT_VALUE = 1;
 
     // Truck
     public static final String CHASSIS_NUMBER_EXISTS = "This chassis number already exists!";

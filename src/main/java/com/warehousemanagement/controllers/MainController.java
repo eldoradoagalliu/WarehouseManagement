@@ -1,6 +1,7 @@
 package com.warehousemanagement.controllers;
 
 import com.warehousemanagement.models.User;
+import com.warehousemanagement.services.OrderService;
 import com.warehousemanagement.services.UserService;
 import com.warehousemanagement.validation.UserValidator;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import static com.warehousemanagement.models.constants.Constants.*;
@@ -31,6 +33,9 @@ public class MainController {
     @Autowired
     private UserValidator userValidator;
 
+    @Autowired
+    private OrderService orderService;
+
     @GetMapping("/")
     public String home(Principal principal, @ModelAttribute("user") User user, Model model) {
         if (userService.principalIsNull(principal)) return "redirect:/logout";
@@ -40,8 +45,7 @@ public class MainController {
 //            return "redirect:/system/admin";
             return "admin_dashboard";
         } else if (userService.isManager(principal)) {
-//            return "redirect:/manage/warehouse";
-            return "manager_dashboard";
+            return "redirect:/manage/warehouse";
         } else {
             return "redirect:/dashboard";
         }
@@ -50,6 +54,7 @@ public class MainController {
     @GetMapping("/login")
     public String login(@ModelAttribute("user") User user, @RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout, Model model) {
+        logger.info("Login attempt");
         if (error != null) {
             logger.warn("Invalid username or password!");
             model.addAttribute("errorMessage", INVALID_CREDENTIALS);
@@ -70,7 +75,7 @@ public class MainController {
 
     @GetMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, Model model) {
-        logger.info("Registering new user");
+        logger.info("Register user");
         model.addAttribute("adminDoesntExist", userService.getAllUsers().isEmpty());
         return "register";
     }
@@ -82,7 +87,9 @@ public class MainController {
         String password = user.getPassword();
 
         if (result.hasErrors() || Objects.nonNull(userService.findUser(user.getEmail()))) {
-            if (Objects.nonNull(userService.findUser(user.getEmail()))) {
+            if (Objects.nonNull(userService.findUser(user.getEmail())))
+                logger.error("The Requested Email already exists");
+            {
                 model.addAttribute("emailExists", EMAIL_EXISTS);
             }
             model.addAttribute("adminDoesntExist", userService.getAllUsers().isEmpty());
@@ -96,7 +103,7 @@ public class MainController {
 
     private void authWithHttpServletRequest(HttpServletRequest request, String email, String password) {
         try {
-            logger.info("Authenticating user..");
+            logger.info("Authenticate User");
             request.login(email, password);
         } catch (ServletException e) {
             logger.error("Error while authenticating user", e);
@@ -112,14 +119,18 @@ public class MainController {
 
     @GetMapping("/manage/warehouse")
     public String managerDashboard(Principal principal, Model model) {
+        if (userService.principalIsNull(principal) || !userService.isManager(principal)) return "redirect:/logout";
         logger.info("In Warehouse Manager Dashboard");
-        return "dashboard";
+        model.addAttribute("user", userService.findUser(principal.getName()));
+        model.addAttribute("orders", orderService.getSortedOrders());
+        model.addAttribute("now", LocalDate.now().plusDays(DEFAULT_VALUE));
+        return "manager_dashboard";
     }
 
     @GetMapping("/dashboard")
     public String dashboard(Principal principal, Model model) {
-        logger.info("In Client Dashboard");
         if (userService.principalIsNull(principal)) return "redirect:/logout";
+        logger.info("In Client Dashboard");
         User currentUser = userService.findUser(principal.getName());
         model.addAttribute("user", currentUser);
         return "dashboard";

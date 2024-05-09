@@ -40,10 +40,10 @@ public class User {
     private String newRequestedPassword;
 
     @Column(updatable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createdAt;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date updatedAt;
 
     @PrePersist
@@ -63,6 +63,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
+
+    @Column(updatable = false)
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Order> orders;
 
     public String getFullName() {
         return firstName + " " + lastName;
