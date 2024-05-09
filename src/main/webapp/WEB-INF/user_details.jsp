@@ -17,15 +17,15 @@
 </head>
 <body>
 <div class="main-part">
-    <h2 class="text-center mb-3 details">User Details</h2>
     <div class="register-form">
+        <h2 class="text-decoration-underline text-center mb-3 details">User Details</h2>
         <div>Name: <c:out value="${user.getFullName()}"/></div>
         <div>Email: <c:out value="${user.email}"/></div>
-        <div>Account created on: <fmt:formatDate pattern="HH:mm, d MMMM yyyy" value="${user.createdAt}"/></div>
+        <div>Account created on: <fmt:formatDate pattern="HH:mm - d MMMM yyyy" value="${user.createdAt}"/></div>
         <form:form action="/request/password/change/${user.id}" method="POST">
             <div class="d-flex align-content-center m-1">
                 <label class="col-sm-5 col-form-label">New password:</label>
-                <input name="newPassword" class="form-control input-font" required="required"/>
+                <input name="newPassword" class="form-control" required="required"/>
             </div>
             <c:if test="${passwordMatches != null}">
                 <div class="text-danger m-1"><c:out value="${passwordMatches}"/></div>

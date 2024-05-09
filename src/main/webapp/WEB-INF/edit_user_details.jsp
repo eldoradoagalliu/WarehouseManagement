@@ -16,24 +16,24 @@
 </head>
 <body>
 <div class="main-part">
-    <h2 class="text-decoration-underline text-center mb-3">Edit User Details</h2>
     <div class="edit-user-form">
+        <h2 class="text-decoration-underline text-center mb-3 details">Edit User Details</h2>
         <%--@elvariable id="user" type="user"--%>
         <form:form action="/account/edit/${user.id}" method="POST" modelAttribute="user">
             <input type="hidden" name="_method" value="put">
             <div class="d-flex align-content-center m-1">
                 <form:label path="firstName" class="col-sm-5 col-form-label">First Name:</form:label>
-                <form:input path="firstName" class="form-control input-font"/>
+                <form:input path="firstName" class="form-control"/>
             </div>
             <div class="d-flex align-content-center m-1"><form:errors path="firstName" class="text-danger"/></div>
             <div class="d-flex align-content-center m-1">
                 <form:label path="lastName" class="col-sm-5 col-form-label">Last Name:</form:label>
-                <form:input path="lastName" class="form-control input-font"/>
+                <form:input path="lastName" class="form-control"/>
             </div>
             <div class="d-flex align-content-center m-1"><form:errors path="lastName" class="text-danger"/></div>
             <div class="d-flex align-content-center m-1">
                 <form:label path="email" class="col-sm-5 col-form-label">Email:</form:label>
-                <form:input path="email" class="form-control input-font"/>
+                <form:input path="email" class="form-control"/>
             </div>
             <div class="d-flex align-content-center m-1"><form:errors path="email" class="text-danger"/></div>
             <c:if test="${emailExists != null}">

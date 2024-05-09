@@ -19,20 +19,20 @@
     <div class="register-form">
         <%--@elvariable id="user" type="user"--%>
         <form:form action="/register" method="POST" modelAttribute="user">
-            <h2 class="text-decoration-underline text-center mb-3 register">Register</h2>
+            <h2 class="text-decoration-underline text-center mb-3 register">Register User</h2>
             <div class="d-flex align-content-center m-1">
                 <form:label path="firstName" class="col-sm-5 col-form-label">First Name:</form:label>
-                <form:input path="firstName" class="form-control input-font"/>
+                <form:input path="firstName" class="form-control"/>
             </div>
             <div class="d-flex align-content-center m-1"><form:errors path="firstName" class="text-danger"/></div>
             <div class="d-flex align-content-center m-1">
                 <form:label path="lastName" class="col-sm-5 col-form-label">Last Name:</form:label>
-                <form:input path="lastName" class="form-control input-font"/>
+                <form:input path="lastName" class="form-control"/>
             </div>
             <div class="d-flex align-content-center m-1"><form:errors path="lastName" class="text-danger"/></div>
             <div class="d-flex align-content-center m-1">
                 <form:label path="email" class="col-sm-5 col-form-label">Email:</form:label>
-                <form:input path="email" class="form-control input-font"/>
+                <form:input path="email" class="form-control"/>
             </div>
             <div class="d-flex align-content-center m-1"><form:errors path="email" class="text-danger"/></div>
             <c:if test="${emailExists != null}">
@@ -40,19 +40,19 @@
             </c:if>
             <div class="d-flex align-content-center m-1">
                 <form:label path="password" class="col-sm-5 col-form-label">Password:</form:label>
-                <form:input path="password" type="password" class="form-control input-font"/>
+                <form:input path="password" type="password" class="form-control"/>
             </div>
             <div class="d-flex align-content-center m-1"><form:errors path="password" class="text-danger"/></div>
             <div class="d-flex align-content-center m-1 mb-2">
                 <form:label path="confirmedPassword" class="col-sm-5 col-form-label">Confirm Password:</form:label>
-                <form:input path="confirmedPassword" type="password" class="form-control input-font"/>
+                <form:input path="confirmedPassword" type="password" class="form-control"/>
             </div>
             <div class="d-flex align-content-center m-1">
                 <form:errors path="confirmedPassword" class="text-danger"/>
             </div>
             <div class="d-flex align-content-center m-1 mb-2">
                 <label class="col-sm-5 col-form-label">User Type:</label>
-                <select class="form-select input-font" name="role" type="hidden">
+                <select class="form-select" name="role" type="hidden">
                     <c:if test="${adminDoesntExist}">
                         <option value="SYSTEM_ADMIN">System Administrator</option>
                     </c:if>

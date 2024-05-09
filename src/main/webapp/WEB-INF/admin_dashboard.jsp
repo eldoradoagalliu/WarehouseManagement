@@ -14,8 +14,8 @@
     <link rel="stylesheet" type="text/css" href="/css/admin-dashboard-style.css">
 </head>
 <body class="container">
-<h1 class="text-center text-u">Admin Dashboard</h1>
-<div class="d-flex justify-content-end mt-5">
+<h1 class="text-center">Admin Dashboard</h1>
+<div class="d-flex justify-content-end mt-3">
     <form:form action="/register" method="GET">
         <button class="btn btn-light register">Register User</button>
     </form:form>
@@ -25,7 +25,7 @@
     </form>
 </div>
 <c:if test="${!users.isEmpty()}">
-    <h2>Users registered in Warehouse Application</h2>
+    <h3>Users registered in Warehouse Application</h3>
     <c:if test="${successfulPasswordChange != null}">
         <div class="text-success text-center m-1"><c:out value="${successfulPasswordChange}"/></div>
     </c:if>
@@ -41,8 +41,8 @@
         <c:forEach var="user" items="${users}">
             <tbody>
             <tr>
-                <td class="align-content-center"><a href="/account/${user.id}" class="link">${user.getFullName()}</a></td>
-                <td class="align-content-center"><c:out value="${user.getUserRole()}"/></td>
+                <td class="pt-4"><a href="/account/${user.id}" class="link">${user.getFullName()}</a></td>
+                <td class="pt-4"><c:out value="${user.getUserRole()}"/></td>
                 <td class="d-flex align-content-center justify-content-end">
                     <c:if test="${user.newRequestedPassword != null}">
                         <form:form action="/approve/password/change/${user.id}" method="POST">

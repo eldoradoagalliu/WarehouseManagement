@@ -21,18 +21,18 @@
         <form:form action="/login" method="POST" modelAttribute="user">
             <h2 class="text-decoration-underline text-center mb-3 login">Login</h2>
             <c:if test="${logoutMessage != null}">
-                <div class="text-success text-center m-3"><h5><c:out value="${logoutMessage}"/></h5></div>
+                <div class="text-success text-center m-2"><h5><c:out value="${logoutMessage}"/></h5></div>
             </c:if>
             <c:if test="${errorMessage != null}">
-                <div class="text-danger text-center m-3"><h5><c:out value="${errorMessage}"/></h5></div>
+                <div class="text-danger text-center m-2"><h5><c:out value="${errorMessage}"/></h5></div>
             </c:if>
             <div class="mb-3 d-flex align-content-center">
                 <form:label path="email" class="col-sm-4 col-form-label">Email:</form:label>
-                <form:input path="email" class="form-control input-font" required="required"/>
+                <form:input path="email" class="form-control" required="required"/>
             </div>
             <div class="mb-3 d-flex align-content-center">
                 <form:label path="password" class="col-sm-4 col-form-label">Password:</form:label>
-                <form:input path="password" type="password" class="form-control input-font" required="required"/>
+                <form:input path="password" type="password" class="form-control" required="required"/>
             </div>
             <button class="btn btn-success login-button col-sm-4">Login</button>
             <c:if test="${adminDoesntExist}">
