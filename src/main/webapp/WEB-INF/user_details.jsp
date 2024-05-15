@@ -22,7 +22,7 @@
         <div>Name: <c:out value="${user.getFullName()}"/></div>
         <div>Email: <c:out value="${user.email}"/></div>
         <div>Account created on: <fmt:formatDate pattern="HH:mm - d MMMM yyyy" value="${user.createdAt}"/></div>
-        <form:form action="/request/password/change/${user.id}" method="POST">
+        <form:form action="/account/request/password/change/${user.id}" method="POST">
             <div class="d-flex align-content-center m-1">
                 <label class="col-sm-5 col-form-label">New password:</label>
                 <input name="newPassword" class="form-control" required="required"/>

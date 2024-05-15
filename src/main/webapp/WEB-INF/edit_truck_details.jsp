@@ -19,7 +19,7 @@
     <div class="edit-truck-form">
         <h2 class="text-decoration-underline text-center mb-3 form-title">Edit Truck Details</h2>
         <%--@elvariable id="truck" type="truck"--%>
-        <form:form action="/truck/edit/${truck.id}" method="POST" modelAttribute="truck">
+        <form:form action="/truck/${truck.id}" method="POST" modelAttribute="truck">
             <input type="hidden" name="_method" value="put">
             <div class="d-flex align-content-center m-1">
                 <form:label path="chassisNumber" class="col-sm-5 col-form-label">Chassis Number:</form:label>

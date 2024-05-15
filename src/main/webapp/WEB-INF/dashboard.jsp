@@ -18,7 +18,7 @@
 <body class="container">
 <h1 class="text-center">My Dashboard</h1>
 <div class="d-flex justify-content-end mt-5">
-    <form:form action="/order/create" method="POST">
+    <form:form action="/order" method="POST">
         <button class="btn btn-primary order-button">New Order</button>
     </form:form>
     <form:form action="/" method="GET">

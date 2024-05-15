@@ -1,6 +1,6 @@
 package com.warehousemanagement.validation;
 
-import com.warehousemanagement.models.User;
+import com.warehousemanagement.model.User;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

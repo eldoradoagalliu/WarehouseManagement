@@ -19,7 +19,7 @@
     <div class="item-form">
         <h2 class="text-decoration-underline text-center mb-3 form-title">Edit Item Details</h2>
         <%--@elvariable id="item" type="item"--%>
-        <form:form action="/edit/item/${item.id}" method="POST" modelAttribute="item">
+        <form:form action="/item/${item.id}" method="POST" modelAttribute="item">
             <input type="hidden" name="_method" value="put">
             <div class="d-flex align-content-center m-1">
                 <form:label path="name" class="col-sm-5 col-form-label">Item Name:</form:label>

@@ -19,7 +19,7 @@
     <div class="item-form">
         <h2 class="text-decoration-underline text-center mb-3 form-title">Add Item in Inventory</h2>
         <%--@elvariable id="item" type="item"--%>
-        <form:form action="/add/item" method="POST" modelAttribute="item">
+        <form:form action="/item" method="POST" modelAttribute="item">
             <div class="d-flex align-content-center m-1">
                 <form:label path="name" class="col-sm-5 col-form-label">Item Name:</form:label>
                 <form:input path="name" class="form-control"/>

@@ -40,10 +40,10 @@
                     <td class="pt-4"><c:out value="${item.quantity}"/></td>
                     <td class="pt-4"><c:out value="${item.unitPrice}"/></td>
                     <td class="d-flex align-content-center justify-content-center">
-                        <form:form action="/edit/item/${item.id}" method="GET">
+                        <form:form action="/item/${item.id}" method="GET">
                             <button class="btn btn-secondary">Edit</button>
                         </form:form>
-                        <form:form action="/delete/item/${item.id}" method="POST">
+                        <form:form action="/item/${item.id}" method="POST">
                             <input type="hidden" name="_method" value="delete">
                             <button class="btn btn-danger">Delete</button>
                         </form:form>

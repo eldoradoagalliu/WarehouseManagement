@@ -70,7 +70,7 @@
                                 <input type="hidden" name="orderNumber" value="${order.orderNumber}">
                                 <button class="btn btn-success">Add 1</button>
                             </form:form>
-                            <form:form action="/modify/item/quantity/${item.id}" method="POST">
+                            <form:form action="/order/modify/item/quantity/${item.id}" method="POST">
                                 <input type="number" name="quantity" class="quantity-input" min="2"
                                        placeholder="Item quantity" required="required">
                                 <input type="hidden" name="orderNumber" value="${order.orderNumber}">

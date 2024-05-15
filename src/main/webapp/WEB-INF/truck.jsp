@@ -21,7 +21,7 @@
     </form:form>
     <h2 class="text-center mt-3">Add a new Truck</h2>
     <%--@elvariable id="truck" type=""--%>
-    <form:form action="/truck/add" method="POST" modelAttribute="truck">
+    <form:form action="/truck" method="POST" modelAttribute="truck">
         <div class="d-flex align-content-start justify-content-evenly m-1">
             <div class="d-flex align-content-center">
                 <form:label path="chassisNumber" class="col-sm-5 col-form-label">Chassis Number:</form:label>
@@ -50,10 +50,10 @@
                         Truck with Chassis number <c:out value="${truck.chassisNumber}"/> and License plate
                         <c:out value="${truck.licensePlate}"/>
                     </li>
-                    <form:form action="/truck/edit/${truck.id}" method="GET">
+                    <form:form action="/truck/${truck.id}" method="GET">
                         <button class="btn btn-secondary">Edit</button>
                     </form:form>
-                    <form:form action="/truck/delete/${truck.id}" method="POST">
+                    <form:form action="/truck/${truck.id}" method="POST">
                         <input type="hidden" name="_method" value="delete">
                         <button class="btn btn-danger">Delete</button>
                     </form:form>

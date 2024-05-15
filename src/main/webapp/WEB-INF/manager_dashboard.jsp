@@ -18,10 +18,10 @@
 <body class="container">
 <h1 class="text-center title">Manager Dashboard</h1>
 <div class="d-flex justify-content-end mt-5">
-    <form:form action="/inventory" method="GET">
+    <form:form action="/item/inventory" method="GET">
         <button class="btn btn-success dashboard-button">View Inventory Items</button>
     </form:form>
-    <form:form action="/truck/add" method="GET">
+    <form:form action="/truck" method="GET">
         <button class="btn btn-primary dashboard-button">New Truck</button>
     </form:form>
     <form:form action="/account/${user.id}" method="GET">

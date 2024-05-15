@@ -45,7 +45,7 @@
                 <td class="pt-4"><c:out value="${user.getUserRole()}"/></td>
                 <td class="d-flex align-content-center justify-content-end">
                     <c:if test="${user.newRequestedPassword != null}">
-                        <form:form action="/approve/password/change/${user.id}" method="POST">
+                        <form:form action="/account/approve/password/change/${user.id}" method="POST">
                             <input type="hidden" name="newPassword" value="${user.newRequestedPassword}">
                             <button class="btn btn-primary">Approve Password Change</button>
                         </form:form>
@@ -53,7 +53,7 @@
                     <form action="/account/edit/${user.id}">
                         <button class="btn btn-secondary">Edit</button>
                     </form>
-                    <form:form action="/account/delete/${user.id}" method="POST">
+                    <form:form action="/account/${user.id}" method="POST">
                         <input type="hidden" name="_method" value="delete">
                         <button class="btn btn-danger">Delete</button>
                     </form:form>
