@@ -1,30 +1,42 @@
 package com.warehousemanagement.model;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-import static com.warehousemanagement.model.constant.Constants.DEFAULT_VALUE;
 import static com.warehousemanagement.model.enums.OrderStatusEnum.FULFILLED;
 import static com.warehousemanagement.model.enums.OrderStatusEnum.UNDER_DELIVERY;
 
-@Data
 @Entity
 @Table(name = "orders")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderNumber;
 
     private String status;
-
     private Date submittedDate;
-
     private LocalDate deadline;
-
     private String declineReason;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,15 +49,6 @@ public class Order {
     @Column(updatable = false)
     @OneToMany(mappedBy = "orderToDeliver", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Truck> truckDelivers;
-
-    public Order() {
-    }
-
-    public Order(String status, User client) {
-        this.status = status;
-        this.client = client;
-        this.submittedDate = new Date(DEFAULT_VALUE);
-    }
 
     public String formatStatus() {
         return status.replace("_", " ");
