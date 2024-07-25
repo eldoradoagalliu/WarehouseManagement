@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
+
     Order findByOrderNumberIs(Long orderNumber);
 
     List<Order> findByStatusOrderBySubmittedDateDesc(String status);

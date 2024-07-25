@@ -3,19 +3,17 @@ package com.warehousemanagement.service.implementation;
 import com.warehousemanagement.model.Order;
 import com.warehousemanagement.repository.OrderRepository;
 import com.warehousemanagement.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class OrderServiceImplementation implements OrderService {
+@RequiredArgsConstructor
+public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepo;
-
-    public OrderServiceImplementation(OrderRepository orderRepo) {
-        this.orderRepo = orderRepo;
-    }
 
     @Override
     public List<Order> getSortedOrders() {

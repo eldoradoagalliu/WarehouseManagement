@@ -6,6 +6,7 @@ import com.warehousemanagement.model.OrderItemQuantity;
 import com.warehousemanagement.repository.InventoryRepository;
 import com.warehousemanagement.repository.OrderItemQuantityRepository;
 import com.warehousemanagement.service.InventoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,15 +14,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class InventoryServiceImplementation implements InventoryService {
+@RequiredArgsConstructor
+public class InventoryServiceImpl implements InventoryService {
 
     private final InventoryRepository inventoryRepo;
     private final OrderItemQuantityRepository itemQuantityRepo;
-
-    public InventoryServiceImplementation(InventoryRepository inventoryRepo, OrderItemQuantityRepository itemQuantityRepo) {
-        this.inventoryRepo = inventoryRepo;
-        this.itemQuantityRepo = itemQuantityRepo;
-    }
 
     @Override
     public List<Item> getAllItems() {
@@ -77,7 +74,7 @@ public class InventoryServiceImplementation implements InventoryService {
     @Override
     public void removeItemFromOrder(Order order, Item item) {
         Optional<OrderItemQuantity> foundOrderItem = getOrderItem(order, item);
-        if(foundOrderItem.isPresent()) {
+        if (foundOrderItem.isPresent()) {
             OrderItemQuantity orderItem = foundOrderItem.get();
             if (Objects.equals(orderItem.getItem().getId(), item.getId())) {
                 item.setQuantity(item.getQuantity() + orderItem.getQuantity());

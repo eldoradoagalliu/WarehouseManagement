@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TruckRepository extends JpaRepository<Truck, Long> {
+
     Truck findByIdIs(Long id);
 
     Truck findByChassisNumber(String chassisNumber);

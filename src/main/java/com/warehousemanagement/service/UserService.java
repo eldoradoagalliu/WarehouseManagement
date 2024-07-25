@@ -15,8 +15,6 @@ public interface UserService {
 
     User findUser(String email);
 
-    void createUser(User user, String role);
-
     void updateUser(User user);
 
     void deleteUser(User user);

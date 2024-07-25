@@ -3,18 +3,16 @@ package com.warehousemanagement.service.implementation;
 import com.warehousemanagement.model.Truck;
 import com.warehousemanagement.repository.TruckRepository;
 import com.warehousemanagement.service.TruckService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TruckServiceImplementation implements TruckService {
+@RequiredArgsConstructor
+public class TruckServiceImpl implements TruckService {
 
     private final TruckRepository truckRepo;
-
-    public TruckServiceImplementation(TruckRepository truckRepo) {
-        this.truckRepo = truckRepo;
-    }
 
     @Override
     public List<Truck> getAllTrucks() {

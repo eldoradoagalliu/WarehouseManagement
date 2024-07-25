@@ -2,28 +2,25 @@ package com.warehousemanagement.service.implementation;
 
 import com.warehousemanagement.model.User;
 import com.warehousemanagement.model.enums.RoleEnum;
-import com.warehousemanagement.repository.RoleRepository;
 import com.warehousemanagement.repository.UserRepository;
 import com.warehousemanagement.service.UserService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 
+import static com.warehousemanagement.model.constant.Constants.USER_NOT_FOUND;
+
 @Service
-public class UserServiceImplementation implements UserService {
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepo;
-    private final RoleRepository roleRepo;
-    private final BCryptPasswordEncoder bCryptPwEncoder;
-
-    public UserServiceImplementation(UserRepository userRepo, RoleRepository roleRepo, BCryptPasswordEncoder bCryptPwEncoder) {
-        this.userRepo = userRepo;
-        this.roleRepo = roleRepo;
-        this.bCryptPwEncoder = bCryptPwEncoder;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getAllUsers() {
@@ -44,14 +41,8 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User findUser(String email) {
-        return userRepo.findByEmail(email);
-    }
-
-    @Override
-    public void createUser(User user, String role) {
-        user.setPassword(bCryptPwEncoder.encode(user.getPassword()));
-        user.setRoles(roleRepo.findByName(role));
-        userRepo.save(user);
+        return userRepo.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
     }
 
     @Override
@@ -84,7 +75,7 @@ public class UserServiceImplementation implements UserService {
     @Override
     public boolean changePassword(Long userId, String newPassword) {
         User currentUser = findUser(userId);
-        String encodedNewPassword = bCryptPwEncoder.encode(newPassword);
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
 
         if (!passwordMatches(newPassword, currentUser.getPassword())) {
             currentUser.setPassword(encodedNewPassword);
@@ -97,6 +88,6 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public boolean passwordMatches(String newPassword, String oldPassword) {
-        return bCryptPwEncoder.matches(newPassword, oldPassword);
+        return passwordEncoder.matches(newPassword, oldPassword);
     }
 }

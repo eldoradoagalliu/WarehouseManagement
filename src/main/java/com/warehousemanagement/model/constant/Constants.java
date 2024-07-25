@@ -1,6 +1,11 @@
 package com.warehousemanagement.model.constant;
 
 public class Constants {
+    // Authorization
+    public static final String AUTHORIZATION = "Authorization";
+    public static final String BEARER = "Bearer ";
+    public static final String USER_NOT_FOUND = "User not found";
+
     // Login
     public static final String INVALID_CREDENTIALS = "Invalid Credentials, Please try again.";
     public static final String SUCCESSFUL_LOGOUT = "Successful Logout!";
