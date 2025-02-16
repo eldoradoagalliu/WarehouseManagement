@@ -15,11 +15,13 @@ public interface UserService {
 
     User findUser(String email);
 
+    User findUserByEmail(String email);
+
     void updateUser(User user);
 
     void deleteUser(User user);
 
-    boolean principalIsNull(Principal principal);
+    boolean isPrincipalNull(Principal principal);
 
     boolean isAdmin(Principal principal);
 

@@ -1,10 +1,14 @@
-package com.warehousemanagement.model.constant;
+package com.warehousemanagement.constant;
 
 public class Constants {
+    // API
+    public static final String API_PATH = "/api/v1";
+
     // Authorization
-    public static final String AUTHORIZATION = "Authorization";
-    public static final String BEARER = "Bearer ";
     public static final String USER_NOT_FOUND = "User not found";
+    public static final String CLIENT = "CLIENT";
+    public static final String WAREHOUSE_MANAGER = "WAREHOUSE_MANAGER";
+    public static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
 
     // Login
     public static final String INVALID_CREDENTIALS = "Invalid Credentials, Please try again.";

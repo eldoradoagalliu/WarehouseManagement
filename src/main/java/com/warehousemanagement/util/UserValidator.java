@@ -1,7 +1,6 @@
 package com.warehousemanagement.util;
 
 import com.warehousemanagement.model.User;
-import com.warehousemanagement.model.dto.RegisterRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -16,7 +15,7 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object object, Errors errors) {
-        RegisterRequest user = (RegisterRequest) object;
+        User user = (User) object;
         if (!user.getConfirmedPassword().equals(user.getPassword())) {
             errors.rejectValue("confirmedPassword", "Match");
         }

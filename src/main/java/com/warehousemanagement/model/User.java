@@ -1,5 +1,6 @@
 package com.warehousemanagement.model;
 
+import com.warehousemanagement.model.enums.UserRole;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -27,7 +29,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -61,6 +62,9 @@ public class User implements UserDetails {
 
     @Size(min = 8, max = 128)
     private String password;
+
+    @Transient
+    private String confirmedPassword;
 
     @Size(min = 8, max = 128)
     private String newRequestedPassword;
@@ -99,14 +103,23 @@ public class User implements UserDetails {
     }
 
     public String getUserRole() {
-        return roles.get(0).getName().replace("_", " ");
+        return roles.stream()
+                .map(Role::getName)
+                .findFirst()
+                .orElse(UserRole.CLIENT.getRole());
+    }
+
+    public String getFormattedUserRole() {
+        return getUserRole().replace("_", " ");
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
-        return authorities;
+        String role = roles.stream()
+                .map(Role::getName)
+                .findFirst()
+                .orElse(UserRole.CLIENT.getRole());
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
     @Override
@@ -132,5 +145,14 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }
