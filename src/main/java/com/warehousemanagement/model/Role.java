@@ -10,8 +10,10 @@ import lombok.Data;
 
 import java.util.List;
 
+import static com.warehousemanagement.constant.Constants.ROLES;
+
 @Entity
-@Table(name = "roles")
+@Table(name = ROLES)
 @Data
 public class Role {
     @Id
@@ -20,7 +22,7 @@ public class Role {
 
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = ROLES)
     private List<User> users;
 
     @Override

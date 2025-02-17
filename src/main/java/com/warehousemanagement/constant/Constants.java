@@ -3,6 +3,22 @@ package com.warehousemanagement.constant;
 public class Constants {
     // API
     public static final String API_PATH = "/api/v1";
+    public static final String REDIRECT_USER_API_PATH = "/api/v1/redirect";
+
+    // Attributes
+    public static final String ID = "id";
+    public static final String USER = "user";
+    public static final String USERS = "users";
+    public static final String NEW_PASSWORD = "newPassword";
+    public static final String ROLES = "roles";
+    public static final String ITEM = "item";
+    public static final String ITEMS = "items";
+    public static final String ORDER = "order";
+    public static final String ORDER_NUMBER = "orderNumber";
+    public static final String ORDERS = "orders";
+    public static final String ORDER_ITEMS = "orderItems";
+    public static final String TRUCK = "truck";
+    public static final String TRUCKS = "trucks";
 
     // Authorization
     public static final String USER_NOT_FOUND = "User not found";

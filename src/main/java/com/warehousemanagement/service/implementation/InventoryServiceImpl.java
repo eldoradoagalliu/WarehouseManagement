@@ -17,52 +17,52 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class InventoryServiceImpl implements InventoryService {
 
-    private final InventoryRepository inventoryRepo;
-    private final OrderItemQuantityRepository itemQuantityRepo;
+    private final InventoryRepository inventoryRepository;
+    private final OrderItemQuantityRepository itemQuantityRepository;
 
     @Override
     public List<Item> getAllItems() {
-        return inventoryRepo.findAll();
+        return inventoryRepository.findAll();
     }
 
     @Override
     public Item getItem(Long id) {
-        return inventoryRepo.findByIdIs(id);
+        return inventoryRepository.findByIdIs(id);
     }
 
     @Override
     public void addItem(Item item) {
-        inventoryRepo.save(item);
+        inventoryRepository.save(item);
     }
 
     @Override
     public void updateItem(Item item) {
-        inventoryRepo.save(item);
+        inventoryRepository.save(item);
     }
 
     @Override
     public void deleteItem(Item item) {
-        inventoryRepo.delete(item);
+        inventoryRepository.delete(item);
     }
 
     @Override
     public void addRequestedItemQuantity(OrderItemQuantity orderItemQuantity) {
-        itemQuantityRepo.save(orderItemQuantity);
+        itemQuantityRepository.save(orderItemQuantity);
     }
 
     @Override
     public void updateItemQuantity(OrderItemQuantity orderItemQuantity) {
-        itemQuantityRepo.save(orderItemQuantity);
+        itemQuantityRepository.save(orderItemQuantity);
     }
 
     @Override
     public List<OrderItemQuantity> getOrderItems(Order order) {
-        return itemQuantityRepo.findByOrder(order);
+        return itemQuantityRepository.findByOrder(order);
     }
 
     @Override
     public Optional<OrderItemQuantity> getOrderItem(Order order, Item item) {
-        return itemQuantityRepo.findByOrderAndItem(order, item);
+        return itemQuantityRepository.findByOrderAndItem(order, item);
     }
 
     @Override
@@ -85,6 +85,6 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     public void removeOrderItemQuantity(OrderItemQuantity orderItemQuantity) {
-        itemQuantityRepo.delete(orderItemQuantity);
+        itemQuantityRepository.delete(orderItemQuantity);
     }
 }

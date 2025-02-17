@@ -2,14 +2,11 @@ package com.warehousemanagement.service;
 
 import com.warehousemanagement.model.User;
 
-import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
 
     List<User> getAllUsers();
-
-    List<User> getNonAdminUsers();
 
     User findUser(Long id);
 
@@ -21,11 +18,7 @@ public interface UserService {
 
     void deleteUser(User user);
 
-    boolean isPrincipalNull(Principal principal);
-
-    boolean isAdmin(Principal principal);
-
-    boolean isManager(Principal principal);
+    List<User> getNonAdminUsers();
 
     boolean changePassword(Long userId, String newPassword);
 

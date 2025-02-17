@@ -20,11 +20,13 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
-import static com.warehousemanagement.model.enums.OrderStatusEnum.FULFILLED;
-import static com.warehousemanagement.model.enums.OrderStatusEnum.UNDER_DELIVERY;
+import static com.warehousemanagement.constant.Constants.ORDER;
+import static com.warehousemanagement.constant.Constants.ORDERS;
+import static com.warehousemanagement.model.enums.OrderStatus.FULFILLED;
+import static com.warehousemanagement.model.enums.OrderStatus.UNDER_DELIVERY;
 
 @Entity
-@Table(name = "orders")
+@Table(name = ORDERS)
 @Data
 @Builder
 @NoArgsConstructor
@@ -43,7 +45,7 @@ public class Order {
     @JoinColumn(name = "client_id")
     private User client;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = ORDER, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderItemQuantity> itemQuantities;
 
     @Column(updatable = false)
@@ -55,11 +57,7 @@ public class Order {
     }
 
     public boolean isDeliveryDone() {
-        if (deadline == null) {
-            return false;
-        } else {
-            return LocalDate.now().isAfter(deadline);
-        }
+        return deadline != null && LocalDate.now().isAfter(deadline);
     }
 
     public boolean isStatusUnderDeliveryOrFulfilled() {

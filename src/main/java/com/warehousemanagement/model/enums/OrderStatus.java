@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum OrderStatusEnum {
+public enum OrderStatus {
     CREATED("CREATED"),
     AWAITING_APPROVAL("AWAITING_APPROVAL"),
     APPROVED("APPROVED"),

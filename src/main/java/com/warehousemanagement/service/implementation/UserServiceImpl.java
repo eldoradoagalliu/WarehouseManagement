@@ -9,9 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.Objects;
 
 import static com.warehousemanagement.constant.Constants.USER_NOT_FOUND;
 
@@ -25,13 +23,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
-    }
-
-    @Override
-    public List<User> getNonAdminUsers() {
-        return userRepository.findAll().stream()
-                .filter(user -> !user.getRoles().get(0).getName().equals(UserRole.SYSTEM_ADMIN.getRole()))
-                .toList();
     }
 
     @Override
@@ -61,20 +52,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isPrincipalNull(Principal principal) {
-        return Objects.isNull(findUser(principal.getName()));
-    }
-
-    @Override
-    public boolean isAdmin(Principal principal) {
-        User currentUser = findUser(principal.getName());
-        return currentUser.getRoles().get(0).getName().equals(UserRole.SYSTEM_ADMIN.getRole());
-    }
-
-    @Override
-    public boolean isManager(Principal principal) {
-        User currentUser = findUser(principal.getName());
-        return currentUser.getRoles().get(0).getName().equals(UserRole.WAREHOUSE_MANAGER.getRole());
+    public List<User> getNonAdminUsers() {
+        return userRepository.findAll().stream()
+                .filter(user -> !user.getUserRole().equals(UserRole.SYSTEM_ADMIN.getRole()))
+                .toList();
     }
 
     @Override

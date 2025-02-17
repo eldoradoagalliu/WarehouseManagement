@@ -15,8 +15,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static com.warehousemanagement.constant.Constants.TRUCKS;
+
 @Entity
-@Table(name = "trucks")
+@Table(name = TRUCKS)
 @Data
 @Builder
 @NoArgsConstructor

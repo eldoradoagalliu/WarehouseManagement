@@ -33,8 +33,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import static com.warehousemanagement.constant.Constants.USERS;
+
 @Entity
-@Table(name = "users")
+@Table(name = USERS)
 @Data
 @Builder
 @NoArgsConstructor

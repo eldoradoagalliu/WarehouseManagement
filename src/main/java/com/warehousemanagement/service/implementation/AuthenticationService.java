@@ -53,7 +53,7 @@ public class AuthenticationService implements AuthenticationProvider {
         userRepository.save(newUser);
     }
 
-    public AuthenticationResponse redirectAuthenticatedUser(String email) {
+    public AuthenticationResponse getAuthenticatedUserRole(String email) {
         Optional<User> userOpt = userRepository.findByEmail(email);
         String userRole = StringUtils.EMPTY;
         if (userOpt.isPresent()) {

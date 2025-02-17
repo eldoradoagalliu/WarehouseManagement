@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static com.warehousemanagement.constant.Constants.API_PATH;
+import static com.warehousemanagement.constant.Constants.REDIRECT_USER_API_PATH;
 
 @EnableWebSecurity
 @Configuration
@@ -25,7 +26,7 @@ public class WebSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize.requestMatchers("/WEB-INF/**", "/webjars/**", "/css/**", "/images/**",
-                                        API_PATH + "/login", API_PATH + "/authenticate", API_PATH + "/register", API_PATH + "/redirect").permitAll()
+                                        API_PATH + "/login", API_PATH + "/authenticate", API_PATH + "/register", REDIRECT_USER_API_PATH).permitAll()
                                 .requestMatchers(API_PATH + "/account/system/admin/**").hasAuthority(UserRole.SYSTEM_ADMIN.getRole())
                                 .requestMatchers(API_PATH + "/account/manage/warehouse/**").hasAuthority(UserRole.WAREHOUSE_MANAGER.getRole())
                                 .anyRequest().authenticated())
@@ -33,7 +34,7 @@ public class WebSecurityConfig {
                         loginConfig.loginPage(API_PATH + "/login")
                                 .loginProcessingUrl(API_PATH + "/authenticate")
                                 .usernameParameter("email")
-                                .successForwardUrl(API_PATH + "/redirect")
+                                .successForwardUrl(REDIRECT_USER_API_PATH)
                                 .permitAll())
                 .logout(logoutConfig ->
                         logoutConfig.logoutUrl(API_PATH + "/logout")

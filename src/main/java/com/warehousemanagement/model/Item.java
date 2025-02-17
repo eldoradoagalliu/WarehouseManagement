@@ -19,8 +19,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+import static com.warehousemanagement.constant.Constants.ITEM;
+import static com.warehousemanagement.constant.Constants.ITEMS;
+
 @Entity
-@Table(name = "items")
+@Table(name = ITEMS)
 @Data
 @Builder
 @NoArgsConstructor
@@ -42,6 +45,6 @@ public class Item {
     @Min(1)
     private Double unitPrice;
 
-    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = ITEM, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderItemQuantity> orderItemsQuantities;
 }
