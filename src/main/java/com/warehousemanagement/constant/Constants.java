@@ -5,6 +5,7 @@ public class Constants {
     public static final String API_PATH = "/api/v1";
     public static final String REDIRECT_USER_API_PATH = "/api/v1/redirect";
     public static final String INVENTORY_API_PATH = "/api/v1/item/inventory";
+    public static final String ORDER_API_PATH = "/api/v1/order/";
 
     // Attributes
     public static final String ID = "id";
@@ -20,6 +21,10 @@ public class Constants {
     public static final String ORDER_NUMBER = "orderNumber";
     public static final String ORDERS = "orders";
     public static final String ORDER_ITEMS = "orderItems";
+    public static final String QUANTITY = "quantity";
+    public static final String LOW_QUANTITY = "lowQuantity";
+    public static final String STATUS = "status";
+    public static final String REASON = "reason";
     public static final String TRUCK = "truck";
     public static final String TRUCKS = "trucks";
     public static final String LICENSE_PLATE = "licensePlate";
