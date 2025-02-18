@@ -2,69 +2,93 @@ package com.warehousemanagement.controller;
 
 import com.warehousemanagement.model.User;
 import com.warehousemanagement.service.InventoryService;
+import com.warehousemanagement.service.OrderService;
 import com.warehousemanagement.service.UserService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.Objects;
 
-import static com.warehousemanagement.model.constant.Constants.EMAIL_EXISTS;
-import static com.warehousemanagement.model.constant.Constants.OLD_PASSWORD_REUSE;
-import static com.warehousemanagement.model.constant.Constants.REUSED_OLD_PASSWORD;
-import static com.warehousemanagement.model.constant.Constants.SUCCESSFUL_PASSWORD_CHANGE;
+import static com.warehousemanagement.constant.Constants.*;
 
 @Controller
-@RequestMapping(path = "/account")
+@RequestMapping(API_PATH + "/account")
+@RequiredArgsConstructor
 public class UserController {
 
     public static Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final InventoryService inventoryService;
+    private final OrderService orderService;
 
-    @Autowired
-    private InventoryService inventoryService;
+    @GetMapping("/dashboard")
+    public String dashboard(Principal principal, Model model) {
+        logger.info("In Client Dashboard");
+        User currentUser = userService.findUser(principal.getName());
+        model.addAttribute(CURRENT_USER, currentUser);
+        return "dashboard";
+    }
+
+    @GetMapping("/manage/warehouse")
+    public String managerDashboard(Principal principal, Model model) {
+        logger.info("In Warehouse Manager Dashboard");
+        model.addAttribute(CURRENT_USER, userService.findUser(principal.getName()));
+        model.addAttribute(ORDERS, orderService.getSortedOrders());
+        model.addAttribute(TODAY_DATE, LocalDate.now().plusDays(DEFAULT_VALUE));
+        return "manager_dashboard";
+    }
+
+    @GetMapping("/system/admin")
+    public String adminDashboard(@ModelAttribute(USER) User user, Model model) {
+        logger.info("In System Administrator Dashboard");
+        model.addAttribute(USERS, userService.getNonAdminUsers());
+        return "admin_dashboard";
+    }
 
     @GetMapping("/{id}")
-    public String userDetails(Principal principal, @PathVariable("id") Long userId, @ModelAttribute("user") User user, Model model) {
-        if (userService.principalIsNull(principal)) return "redirect:/logout";
+    public String accountDetails(@PathVariable(ID) Long userId, @ModelAttribute(USER) User user, Model model) {
         logger.info("In Account Details");
-        model.addAttribute("user", userService.findUser(userId));
+        model.addAttribute(CURRENT_USER, userService.findUser(userId));
         return "user_details";
     }
 
     @PostMapping("/request/password/change/{id}")
-    public String requestPasswordChange(Principal principal, @PathVariable("id") Long userId,
-                                        @RequestParam("newPassword") String newPassword, Model model) {
-        if (userService.principalIsNull(principal)) return "redirect:/logout";
+    public String requestPasswordChange(@PathVariable(ID) Long userId, @RequestParam(NEW_PASSWORD) String newPassword,
+                                        Model model) {
         logger.info("User requested password change");
         User currentUser = userService.findUser(userId);
-
         if (userService.passwordMatches(newPassword, currentUser.getPassword())) {
             logger.error("The old password is used as new password!");
-            model.addAttribute("user", currentUser);
+            model.addAttribute(CURRENT_USER, currentUser);
             model.addAttribute("passwordMatches", OLD_PASSWORD_REUSE);
             return "user_details";
         } else {
             currentUser.setNewRequestedPassword(newPassword);
             userService.updateUser(currentUser);
         }
-        return "redirect:/";
+        return "redirect:" + REDIRECT_USER_API_PATH;
     }
 
     @PostMapping("/approve/password/change/{id}")
-    public String changeAccountPassword(Principal principal, @PathVariable("id") Long userId,
-                                        @RequestParam("newPassword") String newPassword, Model model) {
-        if (userService.principalIsNull(principal)) return "redirect:/logout";
+    public String changeAccountPassword(@PathVariable(ID) Long userId, @RequestParam(NEW_PASSWORD) String newPassword,
+                                        Model model) {
         logger.info("Approve password change");
-
         if (!newPassword.isEmpty()) {
             boolean passwordChanged = userService.changePassword(userId, newPassword);
             model.addAttribute("passwordChanged", passwordChanged);
@@ -76,24 +100,21 @@ public class UserController {
                 model.addAttribute("reusedOldPassword", REUSED_OLD_PASSWORD);
             }
         }
-        model.addAttribute("users", userService.getNonAdminUsers());
-
+        model.addAttribute(USERS, userService.getNonAdminUsers());
         return "admin_dashboard";
     }
 
-    @GetMapping("/edit/{id}")
-    public String editUser(Principal principal, @PathVariable("id") Long userId, Model model) {
-        if (userService.principalIsNull(principal)) return "redirect:/logout";
-        logger.info("In User Details Edit");
-        model.addAttribute("user", userService.findUser(userId));
+    @GetMapping("/{id}/edit")
+    public String editAccount(@PathVariable(ID) Long userId, Model model) {
+        logger.info("In Edit Account Details");
+        model.addAttribute(CURRENT_USER, userService.findUser(userId));
         return "edit_user_details";
     }
 
     @PutMapping("/{id}")
-    public String editUser(Principal principal, @PathVariable("id") Long userId,
-                           @Valid @ModelAttribute("user") User editedUser, BindingResult result, Model model) {
-        if (userService.principalIsNull(principal)) return "redirect:/logout";
-        logger.info("Edit User Details");
+    public String editAccount(@PathVariable(ID) Long userId, @Valid @ModelAttribute(USER) User editedUser, BindingResult result,
+                              Model model) {
+        logger.info("Edit Account Details");
         User currentUser = userService.findUser(userId);
         boolean emailExists = Objects.nonNull(userService.findUser(editedUser.getEmail())) && !editedUser.getEmail().equals(currentUser.getEmail());
 
@@ -109,17 +130,16 @@ public class UserController {
             editedUser.setRoles(currentUser.getRoles());
             editedUser.setOrders(currentUser.getOrders());
             userService.updateUser(editedUser);
-            return "redirect:/";
+            return "redirect:" + REDIRECT_USER_API_PATH;
         }
     }
 
     @DeleteMapping("/{id}")
-    public String deleteUser(Principal principal, @PathVariable("id") Long userId) {
-        if (userService.principalIsNull(principal)) return "redirect:/logout";
+    public String deleteUser(@PathVariable(ID) Long userId) {
         logger.info("Delete User");
         User currentUser = userService.findUser(userId);
         currentUser.getOrders().forEach(inventoryService::returnItemsInInventory);
         userService.deleteUser(currentUser);
-        return "redirect:/";
+        return "redirect:" + REDIRECT_USER_API_PATH;
     }
 }
