@@ -5,58 +5,58 @@ import com.warehousemanagement.model.Truck;
 import com.warehousemanagement.service.OrderService;
 import com.warehousemanagement.service.TruckService;
 import com.warehousemanagement.service.UserService;
+import com.warehousemanagement.util.DateFormatter;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-import static com.warehousemanagement.model.constant.Constants.*;
-import static com.warehousemanagement.model.enums.OrderStatusEnum.UNDER_DELIVERY;
+import static com.warehousemanagement.constant.Constants.*;
+import static com.warehousemanagement.model.enums.OrderStatus.UNDER_DELIVERY;
 import static java.time.DayOfWeek.SUNDAY;
 
 @Controller
-@RequestMapping(path = "/truck")
+@RequestMapping(API_PATH + "/truck")
+@RequiredArgsConstructor
 public class TruckController {
 
     public static Logger logger = LoggerFactory.getLogger(TruckController.class);
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private TruckService truckService;
-
-    @Autowired
-    private OrderService orderService;
+    private final UserService userService;
+    private final TruckService truckService;
+    private final OrderService orderService;
 
     @GetMapping
-    public String addItem(Principal principal, @ModelAttribute("truck") Truck truck, Model model) {
-        if (userService.principalIsNull(principal)) return "redirect:/login";
+    public String addItem(@ModelAttribute(TRUCK) Truck truck, Model model) {
         logger.info("In Truck input form");
-        model.addAttribute("trucks", truckService.getAllTrucks());
+        model.addAttribute(TRUCKS, truckService.getAllTrucks());
         return "truck";
     }
 
     @PostMapping
-    public String addTruck(Principal principal, @Valid @ModelAttribute("truck") Truck truck, BindingResult result, Model model) {
-        if (userService.principalIsNull(principal)) return "redirect:/login";
+    public String addTruck(@Valid @ModelAttribute(TRUCK) Truck truck, BindingResult result, Model model) {
         logger.info("Add new Truck");
-
         if (result.hasErrors() || Objects.nonNull(truckService.findTruck(truck.getChassisNumber()))) {
             if (Objects.nonNull(truckService.findTruck(truck.getChassisNumber()))) {
                 logger.error("Truck already exists");
                 model.addAttribute("chassisNumberExists", CHASSIS_NUMBER_EXISTS);
             }
-            model.addAttribute("trucks", truckService.getAllTrucks());
+            model.addAttribute(TRUCKS, truckService.getAllTrucks());
             return "truck";
         } else {
             truckService.addTruck(truck);
@@ -65,17 +65,15 @@ public class TruckController {
     }
 
     @GetMapping("/{id}")
-    public String editTruck(Principal principal, @PathVariable("id") Long truckId, Model model) {
-        if (userService.principalIsNull(principal)) return "redirect:/login";
+    public String editTruck(@PathVariable(ID) Long truckId, Model model) {
         logger.info("In Edit Truck Details");
-        model.addAttribute("truck", truckService.findTruck(truckId));
+        model.addAttribute(TRUCK, truckService.findTruck(truckId));
         return "edit_truck_details";
     }
 
     @PutMapping("/{id}")
-    public String editTruck(Principal principal, @PathVariable("id") Long truckId,
-                            @Valid @ModelAttribute("truck") Truck editedTruck, BindingResult result, Model model) {
-        if (userService.principalIsNull(principal)) return "redirect:/login";
+    public String editTruck(@PathVariable(ID) Long truckId, @Valid @ModelAttribute(TRUCK) Truck editedTruck,
+                            BindingResult result, Model model) {
         logger.info("Edit Truck Details");
         Truck currentTruck = truckService.findTruck(truckId);
         boolean chassisNumberExists = Objects.nonNull(truckService.findTruck(editedTruck.getChassisNumber()))
@@ -95,45 +93,38 @@ public class TruckController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTruck(Principal principal, @PathVariable("id") Long truckId) {
-        if (userService.principalIsNull(principal)) return "redirect:/login";
+    public String deleteTruck(@PathVariable(ID) Long truckId) {
         logger.info("Delete Truck");
         Truck truck = truckService.findTruck(truckId);
         truckService.deleteTruck(truck);
-        return "redirect:/";
+        return "redirect:" + REDIRECT_USER_API_PATH;
     }
 
     @PostMapping("/schedule/delivery/{orderNumber}")
-    public String scheduleOrderDelivery(Principal principal, @RequestParam("date") String date,
-                                        @RequestParam("licensePlate") String licensePlate,
-                                        @PathVariable("orderNumber") Long orderNumber, Model model) {
-        if (userService.principalIsNull(principal) || !userService.isManager(principal)) return "redirect:/logout";
+    public String scheduleOrderDelivery(Principal principal, @RequestParam(DATE) String date,
+                                        @RequestParam(LICENSE_PLATE) String licensePlate,
+                                        @PathVariable(ORDER_NUMBER) Long orderNumber, Model model) {
         logger.info("Schedule order truck delivery");
-
         Truck truck = truckService.findTruckByPlate(licensePlate);
         Order orderToDeliver = orderService.findOrder(orderNumber);
+
+        model.addAttribute(USER, userService.findUser(principal.getName()));
+        model.addAttribute(ORDERS, orderService.getSortedOrders());
+        model.addAttribute(TODAY_DATE, LocalDate.now().plusDays(DEFAULT_VALUE));
+
         // One day to deliver the order
         if (truck.getOrderToDeliver() != null) {
             logger.warn("The requested truck is busy!");
-            model.addAttribute("user", userService.findUser(principal.getName()));
-            model.addAttribute("orders", orderService.getSortedOrders());
-            model.addAttribute("now", LocalDate.now().plusDays(DEFAULT_VALUE));
             model.addAttribute("busyTruck", BUSY_TRUCK);
             return "manager_dashboard";
         } else {
-            LocalDate deliveryDate = parseDate(date);
+            LocalDate deliveryDate = DateFormatter.parseDate(date);
             if (deliveryDate.getDayOfWeek().equals(SUNDAY)) {
                 logger.warn("The selected day is a off day for truck drivers!");
-                model.addAttribute("user", userService.findUser(principal.getName()));
-                model.addAttribute("orders", orderService.getSortedOrders());
-                model.addAttribute("now", LocalDate.now().plusDays(DEFAULT_VALUE));
                 model.addAttribute("offDay", TRUCK_DRIVER_OFF_DAY);
                 return "manager_dashboard";
             } else if (orderToDeliver.getItemQuantities().size() > 10) {
                 logger.warn("The Order item number surpasses max truck amount!");
-                model.addAttribute("user", userService.findUser(principal.getName()));
-                model.addAttribute("orders", orderService.getSortedOrders());
-                model.addAttribute("now", LocalDate.now().plusDays(DEFAULT_VALUE));
                 model.addAttribute("maxTruckItemAmount", MAX_TRUCK_ITEM_AMOUNT);
                 return "manager_dashboard";
             }
@@ -143,12 +134,7 @@ public class TruckController {
 
             truck.setOrderToDeliver(orderToDeliver);
             truckService.updateTruck(truck);
-            return "redirect:/";
+            return "redirect:" + REDIRECT_USER_API_PATH;
         }
-    }
-
-    private LocalDate parseDate(String date) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return LocalDate.parse(date, dateFormatter);
     }
 }

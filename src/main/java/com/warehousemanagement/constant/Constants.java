@@ -19,6 +19,9 @@ public class Constants {
     public static final String ORDER_ITEMS = "orderItems";
     public static final String TRUCK = "truck";
     public static final String TRUCKS = "trucks";
+    public static final String LICENSE_PLATE = "licensePlate";
+    public static final String TODAY_DATE = "now";
+    public static final String DATE = "date";
 
     // Authorization
     public static final String USER_NOT_FOUND = "User not found";
