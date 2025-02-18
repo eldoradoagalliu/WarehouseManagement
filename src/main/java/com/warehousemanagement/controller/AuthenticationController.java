@@ -21,13 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 import java.util.Objects;
 
-import static com.warehousemanagement.constant.Constants.API_PATH;
-import static com.warehousemanagement.constant.Constants.CLIENT;
-import static com.warehousemanagement.constant.Constants.EMAIL_EXISTS;
-import static com.warehousemanagement.constant.Constants.INVALID_CREDENTIALS;
-import static com.warehousemanagement.constant.Constants.SUCCESSFUL_LOGOUT;
-import static com.warehousemanagement.constant.Constants.SYSTEM_ADMIN;
-import static com.warehousemanagement.constant.Constants.WAREHOUSE_MANAGER;
+import static com.warehousemanagement.constant.Constants.*;
 
 @Controller
 @RequestMapping(API_PATH)
@@ -41,17 +35,16 @@ public class AuthenticationController {
     private final UserValidator userValidator;
 
     @GetMapping("/register")
-    public String registerUser(@ModelAttribute("user") User user, Model model) {
+    public String registerUser(@ModelAttribute(USER) User user, Model model) {
         logger.info("Register attempt");
         model.addAttribute("adminDoesntExist", userService.getAllUsers().isEmpty());
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerUser(Principal principal, @Valid @ModelAttribute("user") User user, BindingResult result,
-                               Model model, @RequestParam(value = "role", required = false) String role) {
+    public String registerUser(Principal principal, @Valid @ModelAttribute(USER) User user, BindingResult result,
+                               Model model, @RequestParam(value = ROLE, required = false) String role) {
         userValidator.validate(user, result);
-
         if (result.hasErrors() || Objects.nonNull(userService.findUserByEmail(user.getEmail()))) {
             if (Objects.nonNull(userService.findUserByEmail(user.getEmail()))) {
                 logger.error("The Requested Email already exists");
@@ -62,12 +55,12 @@ public class AuthenticationController {
         }
         authenticationService.register(user, role);
 
-        AuthenticationResponse response = authenticationService.redirectAuthenticatedUser(principal.getName());
+        AuthenticationResponse response = authenticationService.getAuthenticatedUserRole(principal.getName());
         return redirectAuthenticatedUserToView(response.getRole());
     }
 
     @GetMapping("/login")
-    public String login(@ModelAttribute("user") User user, @RequestParam(value = "error", required = false) String error,
+    public String login(@ModelAttribute(USER) User user, @RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout, Model model) {
         logger.info("Login attempt");
         if (error != null) {
@@ -87,7 +80,7 @@ public class AuthenticationController {
         if (principal == null) {
             return "redirect:/api/v1/logout";
         }
-        AuthenticationResponse response = authenticationService.redirectAuthenticatedUser(principal.getName());
+        AuthenticationResponse response = authenticationService.getAuthenticatedUserRole(principal.getName());
         return redirectAuthenticatedUserToView(response.getRole());
     }
 

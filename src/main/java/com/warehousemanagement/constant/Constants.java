@@ -8,8 +8,10 @@ public class Constants {
     // Attributes
     public static final String ID = "id";
     public static final String USER = "user";
+    public static final String CURRENT_USER = "currentUser";
     public static final String USERS = "users";
     public static final String NEW_PASSWORD = "newPassword";
+    public static final String ROLE = "role";
     public static final String ROLES = "roles";
     public static final String ITEM = "item";
     public static final String ITEMS = "items";

@@ -108,7 +108,7 @@ public class TruckController {
         Truck truck = truckService.findTruckByPlate(licensePlate);
         Order orderToDeliver = orderService.findOrder(orderNumber);
 
-        model.addAttribute(USER, userService.findUser(principal.getName()));
+        model.addAttribute(CURRENT_USER, userService.findUser(principal.getName()));
         model.addAttribute(ORDERS, orderService.getSortedOrders());
         model.addAttribute(TODAY_DATE, LocalDate.now().plusDays(DEFAULT_VALUE));
 
