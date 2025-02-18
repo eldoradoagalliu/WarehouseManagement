@@ -4,6 +4,7 @@ public class Constants {
     // API
     public static final String API_PATH = "/api/v1";
     public static final String REDIRECT_USER_API_PATH = "/api/v1/redirect";
+    public static final String INVENTORY_API_PATH = "/api/v1/item/inventory";
 
     // Attributes
     public static final String ID = "id";
