@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page isErrorPage="true" %>
@@ -7,6 +7,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Warehouse Inventory</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,10 +18,10 @@
 <body class="container">
 <h2 class="text-center my-2 title">Warehouse Item Management</h2>
 <div>
-    <form:form action="/" method="GET">
+    <form:form action="/api/v1/redirect" method="GET">
         <button class="btn btn-light"><- Back</button>
     </form:form>
-    <form:form action="/add/item" method="GET" class="float-end">
+    <form:form action="/api/v1/add/item" method="GET" class="float-end">
         <button class="btn btn-primary dashboard-button">New Item</button>
     </form:form>
     <h3 class="title">Inventory Items:</h3>
@@ -40,10 +41,10 @@
                     <td class="pt-4"><c:out value="${item.quantity}"/></td>
                     <td class="pt-4"><c:out value="${item.unitPrice}"/></td>
                     <td class="d-flex align-content-center justify-content-center">
-                        <form:form action="/item/${item.id}" method="GET">
+                        <form:form action="/api/v1/item/${item.id}" method="GET">
                             <button class="btn btn-secondary">Edit</button>
                         </form:form>
-                        <form:form action="/item/${item.id}" method="POST">
+                        <form:form action="/api/v1/item/${item.id}" method="POST">
                             <input type="hidden" name="_method" value="delete">
                             <button class="btn btn-danger">Delete</button>
                         </form:form>

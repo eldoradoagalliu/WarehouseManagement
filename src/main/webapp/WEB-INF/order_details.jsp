@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page isErrorPage="true" %>
@@ -7,7 +7,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Order</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Order Details</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
@@ -23,7 +24,7 @@
             <div class="text-light">The declined reason: <c:out value="${order.declineReason}"/></div>
         </c:if>
     </div>
-    <form:form action="/" method="GET">
+    <form:form action="/api/v1/reirect" method="GET">
         <button class="btn btn-light"><- Back</button>
     </form:form>
     <c:if test="${!orderItems.isEmpty()}">
@@ -36,7 +37,7 @@
                             <c:out value="${orderItem.item.name}"/> -- <c:out value="${orderItem.quantity}"/>x
                         </li>
                         <c:if test="${!order.isStatusUnderDeliveryOrFulfilled()}">
-                            <form:form action="/order/remove/item/${orderItem.item.id}" method="POST">
+                            <form:form action="/api/v1/order/remove/item/${orderItem.item.id}" method="POST">
                                 <input type="hidden" name="_method" value="delete">
                                 <input type="hidden" name="orderNumber" value="${order.orderNumber}">
                                 <button class="btn btn-danger">Remove</button>
@@ -66,11 +67,11 @@
                         <td class="pt-4"><c:out value="${item.name}"/></td>
                         <td class="pt-4"><c:out value="${item.unitPrice}"/></td>
                         <td class="d-flex justify-content-center">
-                            <form:form action="/order/add/item/${item.id}" method="POST" class="mt-1">
+                            <form:form action="/api/v1/order/add/item/${item.id}" method="POST" class="mt-1">
                                 <input type="hidden" name="orderNumber" value="${order.orderNumber}">
                                 <button class="btn btn-success">Add 1</button>
                             </form:form>
-                            <form:form action="/order/modify/item/quantity/${item.id}" method="POST">
+                            <form:form action="/api/v1/order/modify/item/quantity/${item.id}" method="POST">
                                 <input type="number" name="quantity" class="quantity-input" min="2"
                                        placeholder="Item quantity" required="required">
                                 <input type="hidden" name="orderNumber" value="${order.orderNumber}">
