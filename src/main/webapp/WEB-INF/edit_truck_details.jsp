@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page isErrorPage="true" %>
@@ -7,6 +7,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit Truck</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +20,7 @@
     <div class="edit-truck-form">
         <h2 class="text-decoration-underline text-center mb-3 form-title">Edit Truck Details</h2>
         <%--@elvariable id="truck" type="truck"--%>
-        <form:form action="/truck/${truck.id}" method="POST" modelAttribute="truck">
+        <form:form action="/api/v1/truck/${truck.id}" method="POST" modelAttribute="truck">
             <input type="hidden" name="_method" value="put">
             <div class="d-flex align-content-center m-1">
                 <form:label path="chassisNumber" class="col-sm-5 col-form-label">Chassis Number:</form:label>

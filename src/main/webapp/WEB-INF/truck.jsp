@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page isErrorPage="true" %>
@@ -7,7 +7,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Manager Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Truck Management</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
@@ -16,12 +17,12 @@
 </head>
 <body class="container">
 <div class="truck-form">
-    <form:form action="/" method="GET" css="float-start">
+    <form:form action="/api/v1/redirect" method="GET" css="float-start">
         <button class="btn btn-secondary dashboard-button">Return to Dashboard</button>
     </form:form>
-    <h2 class="text-center mt-3">Add a new Truck</h2>
+    <h2 class="text-center mt-3">New Truck</h2>
     <%--@elvariable id="truck" type=""--%>
-    <form:form action="/truck" method="POST" modelAttribute="truck">
+    <form:form action="/api/v1/truck" method="POST" modelAttribute="truck">
         <div class="d-flex align-content-start justify-content-evenly m-1">
             <div class="d-flex align-content-center">
                 <form:label path="chassisNumber" class="col-sm-5 col-form-label">Chassis Number:</form:label>
@@ -50,10 +51,10 @@
                         Truck with Chassis number <c:out value="${truck.chassisNumber}"/> and License plate
                         <c:out value="${truck.licensePlate}"/>
                     </li>
-                    <form:form action="/truck/${truck.id}" method="GET">
+                    <form:form action="/api/v1/truck/${truck.id}" method="GET">
                         <button class="btn btn-secondary">Edit</button>
                     </form:form>
-                    <form:form action="/truck/${truck.id}" method="POST">
+                    <form:form action="/api/v1/truck/${truck.id}" method="POST">
                         <input type="hidden" name="_method" value="delete">
                         <button class="btn btn-danger">Delete</button>
                     </form:form>
