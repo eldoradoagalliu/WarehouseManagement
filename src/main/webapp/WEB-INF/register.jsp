@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page isErrorPage="true" %>
@@ -7,7 +7,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register into Shop</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
@@ -18,7 +19,7 @@
 <div class="main-part">
     <div class="register-form">
         <%--@elvariable id="user" type="user"--%>
-        <form:form action="/register" method="POST" modelAttribute="user">
+        <form:form action="/api/v1/register" method="POST" modelAttribute="user">
             <h2 class="text-decoration-underline text-center mb-3 register">Register User</h2>
             <div class="d-flex align-content-center m-1">
                 <form:label path="firstName" class="col-sm-5 col-form-label">First Name:</form:label>
