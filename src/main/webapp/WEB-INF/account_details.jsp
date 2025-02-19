@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -8,7 +8,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Account Details</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap">
@@ -22,7 +23,7 @@
         <div>Name: <c:out value="${user.getFullName()}"/></div>
         <div>Email: <c:out value="${user.email}"/></div>
         <div>Account created on: <fmt:formatDate pattern="HH:mm - d MMMM yyyy" value="${user.createdAt}"/></div>
-        <form:form action="/account/request/password/change/${user.id}" method="POST">
+        <form:form action="/api/v1/account/request/password/change/${user.id}" method="POST">
             <div class="d-flex align-content-center m-1">
                 <label class="col-sm-5 col-form-label">New password:</label>
                 <input name="newPassword" class="form-control" required="required"/>

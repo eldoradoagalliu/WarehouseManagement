@@ -65,7 +65,7 @@ public class UserController {
     public String accountDetails(@PathVariable(ID) Long userId, @ModelAttribute(USER) User user, Model model) {
         logger.info("In Account Details");
         model.addAttribute(CURRENT_USER, userService.findUser(userId));
-        return "user_details";
+        return "account_details";
     }
 
     @PostMapping("/request/password/change/{id}")
@@ -77,7 +77,7 @@ public class UserController {
             logger.error("The old password is used as new password!");
             model.addAttribute(CURRENT_USER, currentUser);
             model.addAttribute("passwordMatches", OLD_PASSWORD_REUSE);
-            return "user_details";
+            return "account_details";
         } else {
             currentUser.setNewRequestedPassword(newPassword);
             userService.updateUser(currentUser);
@@ -108,7 +108,7 @@ public class UserController {
     public String editAccount(@PathVariable(ID) Long userId, Model model) {
         logger.info("In Edit Account Details");
         model.addAttribute(CURRENT_USER, userService.findUser(userId));
-        return "edit_user_details";
+        return "edit_account_details";
     }
 
     @PutMapping("/{id}")
@@ -123,7 +123,7 @@ public class UserController {
                 logger.warn("The Requested Email already exists");
                 model.addAttribute("emailExists", EMAIL_EXISTS);
             }
-            return "edit_user_details";
+            return "edit_account_details";
         } else {
             editedUser.setPassword(currentUser.getPassword());
             editedUser.setNewRequestedPassword(currentUser.getNewRequestedPassword());

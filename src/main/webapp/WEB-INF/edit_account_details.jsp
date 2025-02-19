@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page isErrorPage="true" %>
@@ -7,6 +7,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit Details</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +20,7 @@
     <div class="edit-user-form">
         <h2 class="text-decoration-underline text-center mb-3 details">Edit User Details</h2>
         <%--@elvariable id="user" type="user"--%>
-        <form:form action="/account/${user.id}" method="POST" modelAttribute="user">
+        <form:form action="/api/v1/account/${user.id}" method="POST" modelAttribute="user">
             <input type="hidden" name="_method" value="put">
             <div class="d-flex align-content-center m-1">
                 <form:label path="firstName" class="col-sm-5 col-form-label">First Name:</form:label>
