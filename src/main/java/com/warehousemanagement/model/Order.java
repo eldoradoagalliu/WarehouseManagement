@@ -1,5 +1,6 @@
 package com.warehousemanagement.model;
 
+import com.warehousemanagement.model.enums.OrderStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,8 +23,6 @@ import java.util.List;
 
 import static com.warehousemanagement.constant.Constants.ORDER;
 import static com.warehousemanagement.constant.Constants.ORDERS;
-import static com.warehousemanagement.model.enums.OrderStatus.FULFILLED;
-import static com.warehousemanagement.model.enums.OrderStatus.UNDER_DELIVERY;
 
 @Entity
 @Table(name = ORDERS)
@@ -56,11 +55,23 @@ public class Order {
         return status.replace("_", " ");
     }
 
-    public boolean isDeliveryDone() {
-        return deadline != null && LocalDate.now().isAfter(deadline);
+    public boolean isStatusCreatedOrDeclined() {
+        return status.equals(OrderStatus.CREATED.getStatus()) || status.equals(OrderStatus.DECLINED.getStatus());
+    }
+
+    public boolean isStatusAwaitingApproval() {
+        return status.equals(OrderStatus.AWAITING_APPROVAL.getStatus()) && submittedDate != null;
     }
 
     public boolean isStatusUnderDeliveryOrFulfilled() {
-        return status.equals(UNDER_DELIVERY.getStatus()) || status.equals(FULFILLED.getStatus());
+        return status.equals(OrderStatus.UNDER_DELIVERY.getStatus()) || status.equals(OrderStatus.FULFILLED.getStatus());
+    }
+
+    public boolean isStatusSuitableForCancellation() {
+        return !(isStatusUnderDeliveryOrFulfilled() || status.equals(OrderStatus.CANCELLED.getStatus()));
+    }
+
+    public boolean isDeliveryDone() {
+        return deadline != null && LocalDate.now().isAfter(deadline);
     }
 }

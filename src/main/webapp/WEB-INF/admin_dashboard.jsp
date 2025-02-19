@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
@@ -16,13 +16,13 @@
 <body class="container">
 <h1 class="text-center">Admin Dashboard</h1>
 <div class="d-flex justify-content-end mt-3">
-    <form:form action="/register" method="GET">
+    <form:form action="/api/v1/register" method="GET">
         <button class="btn btn-light register">Register User</button>
     </form:form>
-    <form id="logoutForm" action="/logout" method="POST">
+    <form:form action="/api/v1/logout" method="POST">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button class="btn btn-dark logout">Logout</button>
-    </form>
+    </form:form>
 </div>
 <c:if test="${!users.isEmpty()}">
     <h3>Users registered in Warehouse Application</h3>
@@ -41,21 +41,21 @@
         <c:forEach var="user" items="${users}">
             <tbody>
             <tr>
-                <td class="pt-4"><a href="/account/${user.id}" class="link">${user.getFullName()}</a></td>
+                <td class="pt-4"><a href="/api/v1/account/${user.id}" class="link">${user.getFullName()}</a></td>
                 <td class="pt-4"><c:out value="${user.getUserRole()}"/></td>
                 <td class="d-flex align-content-center justify-content-end">
                     <c:if test="${user.newRequestedPassword != null}">
-                        <form:form action="/account/approve/password/change/${user.id}" method="POST">
+                        <form:form action="/api/v1/account/approve/password/change/${user.id}" method="POST">
                             <input type="hidden" name="newPassword" value="${user.newRequestedPassword}">
                             <button class="btn btn-primary">Approve Password Change</button>
                         </form:form>
                     </c:if>
-                    <form action="/account/edit/${user.id}">
-                        <button class="btn btn-secondary">Edit</button>
-                    </form>
-                    <form:form action="/account/${user.id}" method="POST">
+                    <form:form action="/api/v1/account/${user.id}/edit">
+                        <button class="btn btn-secondary">Change Account Details</button>
+                    </form:form>
+                    <form:form action="/api/v1/account/${user.id}" method="POST">
                         <input type="hidden" name="_method" value="delete">
-                        <button class="btn btn-danger">Delete</button>
+                        <button class="btn btn-danger">Delete Account</button>
                     </form:form>
                 </td>
             </tr>

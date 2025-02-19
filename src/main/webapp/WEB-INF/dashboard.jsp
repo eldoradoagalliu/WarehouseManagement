@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -18,19 +18,19 @@
 <body class="container">
 <h1 class="text-center">My Dashboard</h1>
 <div class="d-flex justify-content-end mt-5">
-    <form:form action="/order" method="POST">
+    <form:form action="/api/v1/order" method="POST">
         <button class="btn btn-primary order-button">New Order</button>
     </form:form>
-    <form:form action="/" method="GET">
+    <form:form action="/api/v1/account/dashboard" method="GET">
         <button class="btn btn-success order-button">View All Orders</button>
     </form:form>
-    <form:form action="/account/${user.id}" method="GET">
+    <form:form action="/api/v1/account/${user.id}" method="GET">
         <button class="btn btn-light account-button">My Account</button>
     </form:form>
-    <form id="logoutForm" action="/logout" method="POST">
+    <form:form action="/api/v1/logout" method="POST">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button class="btn btn-dark logout">Logout</button>
-    </form>
+    </form:form>
 </div>
 <c:if test="${!user.orders.isEmpty()}">
     <div>
@@ -44,30 +44,35 @@
             <div>
                 <h2>Your Orders:</h2>
                 <c:choose>
+                    <%--Client Dashboard with all the user orders--%>
                     <c:when test="${orders == null}">
                         <ol>
                             <c:forEach var="order" items="${user.orders}">
                                 <div class="d-flex align-content-start m-0">
                                     <li class="mt-2">
                                         <c:choose>
-                                            <c:when test="${order.status == 'CREATED' or order.status == 'DECLINED'}">
-                                                <a href="/order/${order.orderNumber}" class="link">Order</a>
+                                            <c:when test="${order.isStatusCreatedOrDeclined()}">
+                                                <form:form method="GET">
+                                                    <a href="/api/v1/order/${order.orderNumber}" class="link">Order</a>
+                                                </form:form>
                                             </c:when>
                                             <c:otherwise>Order</c:otherwise>
                                         </c:choose>
                                         --> Current Status: <c:out value="${order.formatStatus()}"/>
-                                        <c:if test="${order.submittedDate != null && order.status == 'AWAITING_APPROVAL'}">
-                                            <div>Submitted on: <fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${order.submittedDate}"/></div>
+                                        <c:if test="${order.isStatusAwaitingApproval()}">
+                                            <div>
+                                                Submitted on: <fmt:formatDate pattern="dd/MM/yyyy HH:mm"
+                                                                              value="${order.submittedDate}"/>
+                                            </div>
                                         </c:if>
                                     </li>
-                                    <c:if test="${order.status == 'CREATED' or order.status == 'DECLINED'}">
-                                        <form:form action="/order/submit/${order.orderNumber}" method="POST">
+                                    <c:if test="${order.isStatusCreatedOrDeclined()}">
+                                        <form:form action="/api/v1/order/submit/${order.orderNumber}" method="POST">
                                             <button class="btn btn-warning order-button">Submit</button>
                                         </form:form>
                                     </c:if>
-
-                                    <c:if test="${!(order.status == 'FULFILLED' or order.status == 'UNDER_DELIVERY' or order.status == 'CANCELLED')}">
-                                        <form:form action="/order/cancel/${order.orderNumber}" method="POST">
+                                    <c:if test="${order.isStatusSuitableForCancellation()}">
+                                        <form:form action="/api/v1/order/cancel/${order.orderNumber}" method="POST">
                                             <input type="hidden" name="_method" value="delete">
                                             <button class="btn btn-danger order-button">Cancel</button>
                                         </form:form>
@@ -76,30 +81,35 @@
                             </c:forEach>
                         </ol>
                     </c:when>
+                    <%--Client Dashboard with filtered orders by status--%>
                     <c:otherwise>
                         <ol>
                             <c:forEach var="order" items="${orders}">
                                 <div class="d-flex align-content-start m-0">
                                     <li class="mt-2">
                                         <c:choose>
-                                            <c:when test="${order.status == 'CREATED' or order.status == 'DECLINED'}">
-                                                <a href="/order/${order.orderNumber}" class="link">Order</a>
+                                            <c:when test="${order.isStatusCreatedOrDeclined()}">
+                                                <form:form method="GET">
+                                                    <a href="/api/v1/order/${order.orderNumber}" class="link">Order</a>
+                                                </form:form>
                                             </c:when>
                                             <c:otherwise>Order</c:otherwise>
                                         </c:choose>
                                         --> Current Status: <c:out value="${order.formatStatus()}"/>
-                                        <c:if test="${order.submittedDate != null && order.status == 'AWAITING_APPROVAL'}">
-                                            <div>Submitted on: <fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${order.submittedDate}"/></div>
+                                        <c:if test="${order.isStatusAwaitingApproval()}">
+                                            <div>
+                                                Submitted on: <fmt:formatDate pattern="dd/MM/yyyy HH:mm"
+                                                                              value="${order.submittedDate}"/>
+                                            </div>
                                         </c:if>
                                     </li>
-                                    <c:if test="${order.status == 'CREATED' or order.status == 'DECLINED'}">
-                                        <form:form action="/order/submit/${order.orderNumber}" method="POST">
+                                    <c:if test="${order.isStatusCreatedOrDeclined()}">
+                                        <form:form action="/api/v1/order/submit/${order.orderNumber}" method="POST">
                                             <button class="btn btn-warning order-button">Submit</button>
                                         </form:form>
                                     </c:if>
-
-                                    <c:if test="${!(order.status == 'FULFILLED' or order.status == 'UNDER_DELIVERY' or order.status == 'CANCELLED')}">
-                                        <form:form action="/order/cancel/${order.orderNumber}" method="POST">
+                                    <c:if test="${order.isStatusSuitableForCancellation()}">
+                                        <form:form action="/api/v1/order/cancel/${order.orderNumber}" method="POST">
                                             <input type="hidden" name="_method" value="delete">
                                             <button class="btn btn-danger order-button">Cancel</button>
                                         </form:form>
@@ -110,7 +120,7 @@
                     </c:otherwise>
                 </c:choose>
             </div>
-            <form:form class="d-flex align-items-center" action="/order/client/filter" method="GET">
+            <form:form class="d-flex align-items-center" action="/api/v1/order/client/filter" method="GET">
                 <label class="col-sm-3 filter p-0">Filter By:</label>
                 <select class="form-select option" name="status" type="hidden">
                     <option value="CREATED">Created</option>
