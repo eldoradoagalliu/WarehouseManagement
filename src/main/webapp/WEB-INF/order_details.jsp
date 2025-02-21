@@ -24,7 +24,7 @@
             <div class="text-light">The declined reason: <c:out value="${order.declineReason}"/></div>
         </c:if>
     </div>
-    <form:form action="/api/v1/reirect" method="GET">
+    <form:form action="/api/v1/redirect" method="POST">
         <button class="btn btn-light"><- Back</button>
     </form:form>
     <c:if test="${!orderItems.isEmpty()}">

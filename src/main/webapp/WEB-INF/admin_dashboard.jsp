@@ -43,7 +43,7 @@
             <tbody>
             <tr>
                 <td class="pt-4"><a href="/api/v1/account/${user.id}" class="link">${user.getFullName()}</a></td>
-                <td class="pt-4"><c:out value="${user.getUserRole()}"/></td>
+                <td class="pt-4"><c:out value="${user.getFormattedUserRole()}"/></td>
                 <td class="d-flex align-content-center justify-content-end">
                     <c:if test="${user.newRequestedPassword != null}">
                         <form:form action="/api/v1/account/approve/password/change/${user.id}" method="POST">
@@ -51,7 +51,7 @@
                             <button class="btn btn-primary">Approve Password Change</button>
                         </form:form>
                     </c:if>
-                    <form:form action="/api/v1/account/${user.id}/edit">
+                    <form:form action="/api/v1/account/${user.id}/edit" method="GET">
                         <button class="btn btn-secondary">Change Account Details</button>
                     </form:form>
                     <form:form action="/api/v1/account/${user.id}" method="POST">

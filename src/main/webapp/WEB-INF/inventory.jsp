@@ -16,12 +16,12 @@
     <link rel="stylesheet" type="text/css" href="/css/item-style.css">
 </head>
 <body class="container">
-<h2 class="text-center my-2 title">Warehouse Item Management</h2>
+<h2 class="text-center my-2 title">Warehouse Item Inventory</h2>
 <div>
-    <form:form action="/api/v1/redirect" method="GET">
+    <form:form action="/api/v1/account/manage/warehouse" method="GET">
         <button class="btn btn-light"><- Back</button>
     </form:form>
-    <form:form action="/api/v1/add/item" method="GET" class="float-end">
+    <form:form action="/api/v1/item" method="GET" class="float-end">
         <button class="btn btn-primary dashboard-button">New Item</button>
     </form:form>
     <h3 class="title">Inventory Items:</h3>

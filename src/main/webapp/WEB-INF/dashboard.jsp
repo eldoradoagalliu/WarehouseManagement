@@ -25,7 +25,7 @@
     <form:form action="/api/v1/account/dashboard" method="GET">
         <button class="btn btn-success order-button">View All Orders</button>
     </form:form>
-    <form:form action="/api/v1/account/${user.id}" method="GET">
+    <form:form action="/api/v1/account/${currentUser.id}" method="GET">
         <button class="btn btn-light account-button">My Account</button>
     </form:form>
     <form:form action="/api/v1/logout" method="POST">
@@ -48,14 +48,12 @@
                     <%--Client Dashboard with all the user orders--%>
                     <c:when test="${orders == null}">
                         <ol>
-                            <c:forEach var="order" items="${user.orders}">
+                            <c:forEach var="order" items="${currentUser.orders}">
                                 <div class="d-flex align-content-start m-0">
                                     <li class="mt-2">
                                         <c:choose>
                                             <c:when test="${order.isStatusCreatedOrDeclined()}">
-                                                <form:form method="GET">
-                                                    <a href="/api/v1/order/${order.orderNumber}" class="link">Order</a>
-                                                </form:form>
+                                                <a href="/api/v1/order/${order.orderNumber}" class="link">Order</a>
                                             </c:when>
                                             <c:otherwise>Order</c:otherwise>
                                         </c:choose>
@@ -90,9 +88,7 @@
                                     <li class="mt-2">
                                         <c:choose>
                                             <c:when test="${order.isStatusCreatedOrDeclined()}">
-                                                <form:form method="GET">
-                                                    <a href="/api/v1/order/${order.orderNumber}" class="link">Order</a>
-                                                </form:form>
+                                                <a href="/api/v1/order/${order.orderNumber}" class="link">Order</a>
                                             </c:when>
                                             <c:otherwise>Order</c:otherwise>
                                         </c:choose>

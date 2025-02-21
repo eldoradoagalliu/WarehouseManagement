@@ -9,14 +9,13 @@ body {
 
 body, .logout, .link {
     color: white;
-    font-weight: 600;
 }
 
 .register {
     color: black;
 }
 
-.register, .logout {
+.register, .logout, .link {
     font-weight: 600;
 }
 

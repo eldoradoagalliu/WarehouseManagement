@@ -17,7 +17,7 @@
 </head>
 <body class="container">
 <div class="truck-form">
-    <form:form action="/api/v1/redirect" method="GET" css="float-start">
+    <form:form action="/api/v1/account/manage/warehouse" method="GET" css="float-start">
         <button class="btn btn-secondary dashboard-button">Return to Dashboard</button>
     </form:form>
     <h2 class="text-center mt-3">New Truck</h2>

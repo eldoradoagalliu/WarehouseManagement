@@ -38,9 +38,7 @@
             <button class="btn btn-success login-button col-sm-4">Login</button>
             <c:if test="${adminDoesntExist}">
                 <div class="mt-2 text-center">
-                    <form:form method="GET">
-                        <a href="/api/v1/register" class="register-link">Register User</a>
-                    </form:form>
+                    <a href="/api/v1/register" class="register-link">Register User</a>
                 </div>
             </c:if>
         </form:form>

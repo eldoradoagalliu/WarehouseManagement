@@ -25,7 +25,7 @@
     <form:form action="/api/v1/truck" method="GET">
         <button class="btn btn-primary dashboard-button">New Truck</button>
     </form:form>
-    <form:form action="/api/v1/account/${user.id}" method="GET">
+    <form:form action="/api/v1/account/${currentUser.id}" method="GET">
         <button class="btn btn-light account-button">My Account</button>
     </form:form>
     <form:form action="/api/v1/logout" method="POST">
