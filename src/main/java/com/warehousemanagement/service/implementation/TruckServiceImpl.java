@@ -12,40 +12,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TruckServiceImpl implements TruckService {
 
-    private final TruckRepository truckRepo;
+    private final TruckRepository truckRepository;
 
     @Override
     public List<Truck> getAllTrucks() {
-        return truckRepo.findAll();
+        return truckRepository.findAll();
     }
 
     @Override
     public Truck findTruck(Long id) {
-        return truckRepo.findByIdIs(id);
+        return truckRepository.findByIdIs(id);
     }
 
     @Override
     public Truck findTruck(String chassisNumber) {
-        return truckRepo.findByChassisNumber(chassisNumber);
+        return truckRepository.findByChassisNumber(chassisNumber);
     }
 
     @Override
     public Truck findTruckByPlate(String licensePlate) {
-        return truckRepo.findByLicensePlate(licensePlate);
+        return truckRepository.findByLicensePlate(licensePlate);
     }
 
     @Override
     public void addTruck(Truck truck) {
-        truckRepo.save(truck);
+        truckRepository.save(truck);
     }
 
     @Override
     public void updateTruck(Truck truck) {
-        truckRepo.save(truck);
+        truckRepository.save(truck);
     }
 
     @Override
     public void deleteTruck(Truck truck) {
-        truckRepo.delete(truck);
+        truckRepository.delete(truck);
     }
 }

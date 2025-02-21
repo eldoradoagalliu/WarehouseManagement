@@ -178,26 +178,6 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/filter")
-    public String filterOrders(Principal principal, @RequestParam(STATUS) String status, Model model) {
-        logger.info("Filter orders by status: {}", status);
-        List<Order> orders = orderService.filterOrders(status);
-        model.addAttribute(CURRENT_USER, userService.findUser(principal.getName()));
-        model.addAttribute(ORDERS, orders);
-        model.addAttribute(TODAY_DATE, LocalDate.now().plusDays(DEFAULT_VALUE));
-        return "manager_dashboard";
-    }
-
-    @GetMapping("/client/filter")
-    public String filterClientOrders(Principal principal, @RequestParam(STATUS) String status, Model model) {
-        logger.info("Filter client orders by status: {}", status);
-        User currentUser = userService.findUser(principal.getName());
-        List<Order> filteredOrders = orderService.filterClientOrder(currentUser.getOrders(), status);
-        model.addAttribute(CURRENT_USER, currentUser);
-        model.addAttribute(ORDERS, filteredOrders);
-        return "dashboard";
-    }
-
     @PostMapping("/approve/{orderNumber}")
     public String approveOrder(@PathVariable(ORDER_NUMBER) Long orderNumber) {
         logger.info("Approve order - No.{}", orderNumber);
@@ -225,5 +205,25 @@ public class OrderController {
         currentOrder.setStatus(OrderStatus.FULFILLED.getStatus());
         orderService.updateOrder(currentOrder);
         return "redirect:/" + REDIRECT_USER_API_PATH;
+    }
+
+    @GetMapping("/filter")
+    public String filterOrders(Principal principal, @RequestParam(STATUS) String status, Model model) {
+        logger.info("Filter orders by status: {}", status);
+        List<Order> orders = orderService.filterOrders(status);
+        model.addAttribute(CURRENT_USER, userService.findUser(principal.getName()));
+        model.addAttribute(ORDERS, orders);
+        model.addAttribute(TODAY_DATE, LocalDate.now().plusDays(DEFAULT_VALUE));
+        return "manager_dashboard";
+    }
+
+    @GetMapping("/client/filter")
+    public String filterClientOrders(Principal principal, @RequestParam(STATUS) String status, Model model) {
+        logger.info("Filter client orders by status: {}", status);
+        User currentUser = userService.findUser(principal.getName());
+        List<Order> filteredOrders = orderService.filterClientOrder(currentUser.getOrders(), status);
+        model.addAttribute(CURRENT_USER, currentUser);
+        model.addAttribute(ORDERS, filteredOrders);
+        return "dashboard";
     }
 }

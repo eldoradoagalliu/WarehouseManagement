@@ -8,43 +8,45 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderRepository orderRepo;
+    private final OrderRepository orderRepository;
 
     @Override
     public List<Order> getSortedOrders() {
-        return orderRepo.findAll().stream()
+        return orderRepository.findAll().stream()
+                .filter(order -> order.getSubmittedDate() != null)
                 .sorted(Comparator.comparing(Order::getSubmittedDate).reversed())
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
     public Order findOrder(Long orderNumber) {
-        return orderRepo.findByOrderNumberIs(orderNumber);
+        return orderRepository.findByOrderNumberIs(orderNumber);
     }
 
     @Override
     public void createOrder(Order order) {
-        orderRepo.save(order);
+        orderRepository.save(order);
     }
 
     @Override
     public void updateOrder(Order order) {
-        orderRepo.save(order);
+        orderRepository.save(order);
     }
 
     @Override
     public void deleteOrder(Order order) {
-        orderRepo.delete(order);
+        orderRepository.delete(order);
     }
 
     @Override
     public List<Order> filterOrders(String status) {
-        return orderRepo.findByStatusOrderBySubmittedDateDesc(status);
+        return orderRepository.findByStatusOrderBySubmittedDateDesc(status);
     }
 
     @Override
