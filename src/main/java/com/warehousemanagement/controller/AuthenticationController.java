@@ -54,9 +54,7 @@ public class AuthenticationController {
             return "register";
         }
         authenticationService.register(user, role);
-
-        AuthenticationResponse response = authenticationService.getAuthenticatedUserRole(principal.getName());
-        return redirectAuthenticatedUserToView(response.getRole());
+        return redirectAuthenticatedUserToView(principal);
     }
 
     @GetMapping("/login")
@@ -75,18 +73,23 @@ public class AuthenticationController {
         return "login";
     }
 
-    @PostMapping("/redirect")
+    @GetMapping("/redirect")
     public String redirect(Principal principal) {
+        return redirectAuthenticatedUserToView(principal);
+    }
+
+    @PostMapping("/redirect")
+    public String loginRedirect(Principal principal) {
+        return redirectAuthenticatedUserToView(principal);
+    }
+
+    private String redirectAuthenticatedUserToView(Principal principal) {
         if (principal == null) {
             return "redirect:/api/v1/logout";
         }
-        AuthenticationResponse response = authenticationService.getAuthenticatedUserRole(principal.getName());
-        return redirectAuthenticatedUserToView(response.getRole());
-    }
-
-    private String redirectAuthenticatedUserToView(String userRole) {
         logger.info("Redirect authenticated user to view");
-        return switch (userRole) {
+        AuthenticationResponse response = authenticationService.getAuthenticatedUserRole(principal.getName());
+        return switch (response.getRole()) {
             case CLIENT -> "redirect:/api/v1/account/dashboard";
             case WAREHOUSE_MANAGER -> "redirect:/api/v1/account/manage/warehouse";
             case SYSTEM_ADMIN -> "redirect:/api/v1/account/system/admin";

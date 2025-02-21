@@ -74,7 +74,7 @@ public class UserController {
         logger.info("User requested password change");
         User currentUser = userService.findUser(userId);
         if (userService.passwordMatches(newPassword, currentUser.getPassword())) {
-            logger.error("The old password is used as new password!");
+            logger.warn("The new password is the same as the old password!");
             model.addAttribute(CURRENT_USER, currentUser);
             model.addAttribute("passwordMatches", OLD_PASSWORD_REUSE);
             return "account_details";
@@ -93,10 +93,10 @@ public class UserController {
             boolean passwordChanged = userService.changePassword(userId, newPassword);
             model.addAttribute("passwordChanged", passwordChanged);
             if (passwordChanged) {
-                logger.info("Password successfully changed");
+                logger.info("Password changed successfully");
                 model.addAttribute("successfulPasswordChange", SUCCESSFUL_PASSWORD_CHANGE);
             } else {
-                logger.error("Reused old password by user!");
+                logger.warn("Reused old password by user!");
                 model.addAttribute("reusedOldPassword", REUSED_OLD_PASSWORD);
             }
         }
@@ -105,7 +105,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editAccount(@PathVariable(ID) Long userId, Model model) {
+    public String editAccount(@PathVariable(ID) Long userId, @ModelAttribute(USER) User user, Model model) {
         logger.info("In Edit Account Details");
         model.addAttribute(CURRENT_USER, userService.findUser(userId));
         return "edit_account_details";
@@ -120,7 +120,7 @@ public class UserController {
 
         if (result.hasErrors() || emailExists) {
             if (emailExists) {
-                logger.warn("The Requested Email already exists");
+                logger.warn("The Requested email already exists");
                 model.addAttribute("emailExists", EMAIL_EXISTS);
             }
             return "edit_account_details";
