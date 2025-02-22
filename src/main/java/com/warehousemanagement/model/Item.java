@@ -38,7 +38,7 @@ public class Item {
     private String name;
 
     @NotNull
-    @Min(1)
+    @Min(0)
     private Long quantity;
 
     @NotNull

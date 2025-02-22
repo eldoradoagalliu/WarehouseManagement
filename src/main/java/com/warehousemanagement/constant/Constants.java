@@ -6,6 +6,7 @@ public class Constants {
     public static final String REDIRECT_USER_API_PATH = "/api/v1/redirect";
     public static final String INVENTORY_API_PATH = "/api/v1/item/inventory";
     public static final String ORDER_API_PATH = "/api/v1/order/";
+    public static final String TRUCK_API_PATH = "/api/v1/truck";
 
     // Attributes
     public static final String ID = "id";

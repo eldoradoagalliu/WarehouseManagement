@@ -7,6 +7,7 @@ import com.warehousemanagement.model.User;
 import com.warehousemanagement.model.enums.OrderStatus;
 import com.warehousemanagement.service.InventoryService;
 import com.warehousemanagement.service.OrderService;
+import com.warehousemanagement.service.TruckService;
 import com.warehousemanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -39,6 +40,7 @@ public class OrderController {
     private final UserService userService;
     private final OrderService orderService;
     private final InventoryService inventoryService;
+    private final TruckService truckService;
 
     @GetMapping("/{orderNumber}")
     public String orderDetails(@PathVariable(ORDER_NUMBER) Long orderNumber, Model model) {
@@ -184,7 +186,7 @@ public class OrderController {
         Order currentOrder = orderService.findOrder(orderNumber);
         currentOrder.setStatus(OrderStatus.APPROVED.getStatus());
         orderService.updateOrder(currentOrder);
-        return "redirect:/" + REDIRECT_USER_API_PATH;
+        return "redirect:" + REDIRECT_USER_API_PATH;
     }
 
     @PostMapping("/decline/{orderNumber}")
@@ -195,7 +197,7 @@ public class OrderController {
         currentOrder.setStatus(OrderStatus.DECLINED.getStatus());
         currentOrder.setDeclineReason(reason);
         orderService.updateOrder(currentOrder);
-        return "redirect:/" + REDIRECT_USER_API_PATH;
+        return "redirect:" + REDIRECT_USER_API_PATH;
     }
 
     @PostMapping("/fulfill/{orderNumber}")
@@ -203,8 +205,11 @@ public class OrderController {
         logger.info("Fulfill order - No.{}", orderNumber);
         Order currentOrder = orderService.findOrder(orderNumber);
         currentOrder.setStatus(OrderStatus.FULFILLED.getStatus());
+        currentOrder.getTruckDelivers().stream()
+                .findFirst()
+                .ifPresent(truck -> truck.setOrderToDeliver(null));
         orderService.updateOrder(currentOrder);
-        return "redirect:/" + REDIRECT_USER_API_PATH;
+        return "redirect:" + REDIRECT_USER_API_PATH;
     }
 
     @GetMapping("/filter")
@@ -213,6 +218,7 @@ public class OrderController {
         List<Order> orders = orderService.filterOrders(status);
         model.addAttribute(CURRENT_USER, userService.findUser(principal.getName()));
         model.addAttribute(ORDERS, orders);
+        model.addAttribute(TRUCKS, truckService.getAllTrucks());
         model.addAttribute(TODAY_DATE, LocalDate.now().plusDays(DEFAULT_VALUE));
         return "manager_dashboard";
     }

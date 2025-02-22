@@ -42,7 +42,7 @@ public class TruckController {
     private final OrderService orderService;
 
     @GetMapping
-    public String addItem(@ModelAttribute(TRUCK) Truck truck, Model model) {
+    public String addTruck(@ModelAttribute(TRUCK) Truck truck, Model model) {
         logger.info("In Truck input form");
         model.addAttribute(TRUCKS, truckService.getAllTrucks());
         return "truck";
@@ -60,7 +60,7 @@ public class TruckController {
             return "truck";
         } else {
             truckService.addTruck(truck);
-            return "redirect:/truck";
+            return "redirect:" + TRUCK_API_PATH;
         }
     }
 
@@ -88,7 +88,7 @@ public class TruckController {
         } else {
             editedTruck.setOrderToDeliver(currentTruck.getOrderToDeliver());
             truckService.updateTruck(editedTruck);
-            return "redirect:/truck";
+            return "redirect:" + TRUCK_API_PATH;
         }
     }
 
@@ -97,7 +97,7 @@ public class TruckController {
         logger.info("Delete Truck");
         Truck truck = truckService.findTruck(truckId);
         truckService.deleteTruck(truck);
-        return "redirect:" + REDIRECT_USER_API_PATH;
+        return "redirect:" + TRUCK_API_PATH;
     }
 
     @PostMapping("/schedule/delivery/{orderNumber}")
@@ -115,16 +115,19 @@ public class TruckController {
         // One day to deliver the order
         if (truck.getOrderToDeliver() != null) {
             logger.warn("The requested truck is busy!");
+            model.addAttribute(TRUCKS, truckService.getAllTrucks());
             model.addAttribute("busyTruck", BUSY_TRUCK);
             return "manager_dashboard";
         } else {
             LocalDate deliveryDate = DateFormatter.parseDate(date);
             if (deliveryDate.getDayOfWeek().equals(SUNDAY)) {
                 logger.warn("The selected day is a off day for truck drivers!");
+                model.addAttribute(TRUCKS, truckService.getAllTrucks());
                 model.addAttribute("offDay", TRUCK_DRIVER_OFF_DAY);
                 return "manager_dashboard";
             } else if (orderToDeliver.getItemQuantities().size() > 10) {
                 logger.warn("The Order item number surpasses max truck amount!");
+                model.addAttribute(TRUCKS, truckService.getAllTrucks());
                 model.addAttribute("maxTruckItemAmount", MAX_TRUCK_ITEM_AMOUNT);
                 return "manager_dashboard";
             }
