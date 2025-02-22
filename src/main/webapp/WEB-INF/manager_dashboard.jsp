@@ -77,9 +77,15 @@
                             </c:if>
                             <c:if test="${order.status == 'APPROVED'}">
                                 <form:form action="/api/v1/truck/schedule/delivery/${order.orderNumber}" method="POST">
-                                    --> Deliver on: <input type="date" name="date" min="${now}"> with Truck:
-                                    <input type="text" name="licensePlate" class="reason-input"
-                                           placeholder="License plate" required="required">
+                                    <label>--> Deliver on: <input type="date" name="date" min="${now}"
+                                                                  required="required"> with Truck:</label>
+                                    <label>
+                                        <select class="form-select option" name="licensePlate" type="hidden">
+                                            <c:forEach var="truck" items="${trucks}">
+                                                <option><c:out value="${truck.licensePlate}"/></option>
+                                            </c:forEach>
+                                        </select>
+                                    </label>
                                     <button class="btn btn-warning dashboard-button">Schedule Delivery</button>
                                 </form:form>
                             </c:if>
