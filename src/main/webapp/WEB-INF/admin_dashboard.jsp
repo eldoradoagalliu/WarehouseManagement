@@ -48,11 +48,11 @@
                     <c:if test="${user.newRequestedPassword != null}">
                         <form:form action="/api/v1/account/approve/password/change/${user.id}" method="POST">
                             <input type="hidden" name="newPassword" value="${user.newRequestedPassword}">
-                            <button class="btn btn-primary">Approve Password Change</button>
+                            <button class="btn btn-info">Approve Password Change</button>
                         </form:form>
                     </c:if>
                     <form:form action="/api/v1/account/${user.id}/edit" method="GET">
-                        <button class="btn btn-secondary">Change Account Details</button>
+                        <button class="btn btn-dark">Edit Account</button>
                     </form:form>
                     <form:form action="/api/v1/account/${user.id}" method="POST">
                         <input type="hidden" name="_method" value="delete">

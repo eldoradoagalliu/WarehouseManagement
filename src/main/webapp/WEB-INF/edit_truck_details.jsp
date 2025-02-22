@@ -35,7 +35,7 @@
                 <form:input path="licensePlate" class="form-control"/>
             </div>
             <div class="d-flex align-content-center m-1"><form:errors path="licensePlate" class="text-danger"/></div>
-            <button class="btn btn-success truck-button mt-2">Confirm Editing</button>
+            <button class="btn btn-warning truck-button mt-2">Confirm Editing</button>
         </form:form>
     </div>
 </div>

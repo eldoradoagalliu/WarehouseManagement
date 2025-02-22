@@ -42,7 +42,7 @@
                     <td class="pt-4"><c:out value="${item.unitPrice}"/></td>
                     <td class="d-flex align-content-center justify-content-center">
                         <form:form action="/api/v1/item/${item.id}" method="GET">
-                            <button class="btn btn-secondary">Edit</button>
+                            <button class="btn btn-outline-dark">Edit</button>
                         </form:form>
                         <form:form action="/api/v1/item/${item.id}" method="POST">
                             <input type="hidden" name="_method" value="delete">

@@ -40,7 +40,7 @@
             <c:if test="${emailExists != null}">
                 <div class="text-danger m-1"><c:out value="${emailExists}"/></div>
             </c:if>
-            <button class="btn btn-success edit-button mt-2">Confirm Editing</button>
+            <button class="btn btn-warning edit-button mt-2">Confirm Editing</button>
         </form:form>
     </div>
 </div>
