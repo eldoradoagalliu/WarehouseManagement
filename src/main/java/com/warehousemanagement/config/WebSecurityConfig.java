@@ -32,16 +32,18 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.GET, API_PATH + "/account/system/admin").hasAuthority(UserRole.SYSTEM_ADMIN.getRole())
                                 .requestMatchers(HttpMethod.POST, API_PATH + "/account/approve/password/change/{id}").hasAuthority(UserRole.SYSTEM_ADMIN.getRole())
                                 .requestMatchers(HttpMethod.GET, API_PATH + "/account/{id}/edit").hasAuthority(UserRole.SYSTEM_ADMIN.getRole())
+                                .requestMatchers(HttpMethod.PUT, API_PATH + "/account/{id}").hasAuthority(UserRole.SYSTEM_ADMIN.getRole())
                                 .requestMatchers(HttpMethod.DELETE, API_PATH + "/account/{id}").hasAuthority(UserRole.SYSTEM_ADMIN.getRole())
                                 // Permissions for Warehouse Manager role
                                 .requestMatchers(HttpMethod.GET, API_PATH + "/account/manage/warehouse").hasAuthority(UserRole.WAREHOUSE_MANAGER.getRole())
                                 .requestMatchers(API_PATH + "/item/**", API_PATH + "/truck/**").hasAuthority(UserRole.WAREHOUSE_MANAGER.getRole())
-                                .requestMatchers(HttpMethod.POST, API_PATH + "/order/approve/{id}", API_PATH + "/order/decline/{id}",
-                                        API_PATH + "/order/fulfill/{id}").hasAuthority(UserRole.WAREHOUSE_MANAGER.getRole())
+                                .requestMatchers(HttpMethod.POST, API_PATH + "/order/approve/{orderNumber}", API_PATH + "/order/decline/{orderNumber}",
+                                        API_PATH + "/order/fulfill/{orderNumber}").hasAuthority(UserRole.WAREHOUSE_MANAGER.getRole())
                                 .requestMatchers(HttpMethod.GET, API_PATH + "/order/filter").hasAuthority(UserRole.WAREHOUSE_MANAGER.getRole())
                                 // Permissions for Client role
                                 .requestMatchers(HttpMethod.GET, API_PATH + "/account/dashboard").hasAuthority(UserRole.CLIENT.getRole())
-                                .requestMatchers(HttpMethod.POST, API_PATH + "/order/submit/{id}", API_PATH + "/order/cancel/{id}").hasAuthority(UserRole.CLIENT.getRole())
+                                .requestMatchers(HttpMethod.POST, API_PATH + "/order/submit/{orderNumber}",
+                                        API_PATH + "/order/cancel/{orderNumber}").hasAuthority(UserRole.CLIENT.getRole())
                                 .requestMatchers(HttpMethod.GET, API_PATH + "/order/client/filter").hasAuthority(UserRole.CLIENT.getRole())
                                 // Common permission for Manager and Client role
                                 .requestMatchers(HttpMethod.POST, API_PATH + "/account/request/password/change/{id}")
