@@ -1,8 +1,8 @@
 # Warehouse Management
 
 Warehouse Management is an application made for making orders and managing the warehouse inventory. 
-This project was built with Java 17, Spring Framework, Spring MVC, Spring Security, MySQL, HTML, CSS and 
-Bootstrap.
+This project was built with Java 17, Spring Framework, Spring MVC, Spring Security (Custom session based authentication), 
+MySQL, HTML, CSS and Bootstrap.
 
 Application features:
 -
@@ -15,4 +15,3 @@ manage client orders until they are delivered, manage delivery trucks (Add, edit
 trucks)
 - Client functionalities -> Make orders by adding items, submit finished orders, so it can be delivered 
 by trucks, require account password change
-- Dynamic UI/UX
