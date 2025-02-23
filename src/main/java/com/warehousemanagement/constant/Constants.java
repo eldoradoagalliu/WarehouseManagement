@@ -43,7 +43,6 @@ public class Constants {
     public static final String SUCCESSFUL_LOGOUT = "Successful Logout!";
 
     // Registration & User Edit
-    public static final String EMAIL_EXISTS = "This email has been used by another user!";
     public static final String SUCCESSFUL_PASSWORD_CHANGE = "User Password changed successfully!";
     public static final String REUSED_OLD_PASSWORD = "The user is using the old account password! User needs to try with another password.";
     public static final String OLD_PASSWORD_REUSE = "You are using the old password! Please, try a new one.";

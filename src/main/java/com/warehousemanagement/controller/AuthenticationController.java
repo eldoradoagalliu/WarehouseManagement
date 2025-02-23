@@ -19,9 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.Objects;
 
-import static com.warehousemanagement.constant.Constants.*;
+import static com.warehousemanagement.constant.Constants.API_PATH;
+import static com.warehousemanagement.constant.Constants.CLIENT;
+import static com.warehousemanagement.constant.Constants.INVALID_CREDENTIALS;
+import static com.warehousemanagement.constant.Constants.ROLE;
+import static com.warehousemanagement.constant.Constants.SUCCESSFUL_LOGOUT;
+import static com.warehousemanagement.constant.Constants.SYSTEM_ADMIN;
+import static com.warehousemanagement.constant.Constants.USER;
+import static com.warehousemanagement.constant.Constants.WAREHOUSE_MANAGER;
 
 @Controller
 @RequestMapping(API_PATH)
@@ -44,12 +50,8 @@ public class AuthenticationController {
     @PostMapping("/register")
     public String registerUser(Principal principal, @Valid @ModelAttribute(USER) User user, BindingResult result,
                                Model model, @RequestParam(value = ROLE, required = false) String role) {
-        userValidator.validate(user, result);
-        if (result.hasErrors() || Objects.nonNull(userService.findUserByEmail(user.getEmail()))) {
-            if (Objects.nonNull(userService.findUserByEmail(user.getEmail()))) {
-                logger.error("The Requested Email already exists");
-                model.addAttribute("emailExists", EMAIL_EXISTS);
-            }
+        userValidator.validateData(user, result);
+        if (result.hasErrors()) {
             model.addAttribute("adminDoesntExist", userService.getAllUsers().isEmpty());
             return "register";
         }

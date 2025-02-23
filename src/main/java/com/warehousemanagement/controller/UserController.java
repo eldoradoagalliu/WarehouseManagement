@@ -3,7 +3,9 @@ package com.warehousemanagement.controller;
 import com.warehousemanagement.model.User;
 import com.warehousemanagement.service.InventoryService;
 import com.warehousemanagement.service.OrderService;
+import com.warehousemanagement.service.TruckService;
 import com.warehousemanagement.service.UserService;
+import com.warehousemanagement.util.UserValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.Objects;
 
 import static com.warehousemanagement.constant.Constants.*;
 
@@ -34,8 +35,10 @@ public class UserController {
     public static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
+    private final UserValidator userValidator;
     private final InventoryService inventoryService;
     private final OrderService orderService;
+    private final TruckService truckService;
 
     @GetMapping("/dashboard")
     public String dashboard(Principal principal, Model model) {
@@ -50,6 +53,7 @@ public class UserController {
         logger.info("In Warehouse Manager Dashboard");
         model.addAttribute(CURRENT_USER, userService.findUser(principal.getName()));
         model.addAttribute(ORDERS, orderService.getSortedOrders());
+        model.addAttribute(TRUCKS, truckService.getAllTrucks());
         model.addAttribute(TODAY_DATE, LocalDate.now().plusDays(DEFAULT_VALUE));
         return "manager_dashboard";
     }
@@ -107,22 +111,17 @@ public class UserController {
     @GetMapping("/{id}/edit")
     public String editAccount(@PathVariable(ID) Long userId, @ModelAttribute(USER) User user, Model model) {
         logger.info("In Edit Account Details");
-        model.addAttribute(CURRENT_USER, userService.findUser(userId));
+        model.addAttribute(USER, userService.findUser(userId));
         return "edit_account_details";
     }
 
     @PutMapping("/{id}")
-    public String editAccount(@PathVariable(ID) Long userId, @Valid @ModelAttribute(USER) User editedUser, BindingResult result,
-                              Model model) {
+    public String editAccount(@PathVariable(ID) Long userId, @Valid @ModelAttribute(USER) User editedUser, BindingResult result) {
         logger.info("Edit Account Details");
         User currentUser = userService.findUser(userId);
-        boolean emailExists = Objects.nonNull(userService.findUser(editedUser.getEmail())) && !editedUser.getEmail().equals(currentUser.getEmail());
+        userValidator.validateEmail(currentUser, editedUser, result);
 
-        if (result.hasErrors() || emailExists) {
-            if (emailExists) {
-                logger.warn("The Requested email already exists");
-                model.addAttribute("emailExists", EMAIL_EXISTS);
-            }
+        if (result.hasErrors()) {
             return "edit_account_details";
         } else {
             editedUser.setPassword(currentUser.getPassword());

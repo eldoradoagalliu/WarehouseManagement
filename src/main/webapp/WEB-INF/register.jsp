@@ -36,9 +36,6 @@
                 <form:input path="email" class="form-control"/>
             </div>
             <div class="d-flex align-content-center m-1"><form:errors path="email" class="text-danger"/></div>
-            <c:if test="${emailExists != null}">
-                <div class="text-danger m-1"><c:out value="${emailExists}"/></div>
-            </c:if>
             <div class="d-flex align-content-center m-1">
                 <form:label path="password" class="col-sm-5 col-form-label">Password:</form:label>
                 <form:input path="password" type="password" class="form-control"/>
